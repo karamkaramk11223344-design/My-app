@@ -3,165 +3,467 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تقييم فروع المطعم</title>
-
+<title>نظام تقييم الفروع</title>
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
-    margin: 0;
-    padding: 20px;
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f3f4f6;
+    color:#222;
 }
-
-.container {
-    max-width: 700px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
+.login{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
 }
-
-h1 {
-    text-align: center;
+.login-box{
+    width:100%;
+    max-width:400px;
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 3px 15px #ccc;
+    text-align:center;
 }
-
-input, select, button {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+.container{
+    max-width:800px;
+    margin:auto;
+    padding:15px;
 }
-
-.section {
-    margin-top: 15px;
-    padding: 12px;
-    background: #f7f7f7;
-    border-radius: 10px;
+.card{
+    background:white;
+    padding:16px;
+    margin:12px 0;
+    border-radius:15px;
+    box-shadow:0 2px 8px #ddd;
 }
-
-.section label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+h1,h2{
+    text-align:center;
 }
-
-button {
-    background: #222;
-    color: white;
-    font-size: 17px;
-    cursor: pointer;
+label{
+    display:block;
+    font-weight:bold;
+    margin-top:10px;
 }
-
-.result {
-    margin-top: 20px;
-    padding: 15px;
-    background: #e8f5e9;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
+input,select,button{
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:16px;
+}
+button{
+    background:#222;
+    color:white;
+    border:0;
+    cursor:pointer;
+    margin-top:15px;
+}
+.error{
+    color:red;
+    margin-top:10px;
+    font-weight:bold;
+}
+.score{
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    margin-top:15px;
+}
+.row{
+    padding:12px;
+    margin:8px 0;
+    background:#f7f7f7;
+    border-radius:10px;
+}
+.good{
+    color:green;
+    font-weight:bold;
+}
+.bad{
+    color:red;
+    font-weight:bold;
+}
+.same{
+    color:#777;
+    font-weight:bold;
+}
+.hidden{
+    display:none;
 }
 </style>
 </head>
-
 <body>
-
-<div class="container">
-
-<h1>تقييم فروع المطعم</h1>
-
-<label>اسم الفرع</label>
-<input type="text" id="branch" placeholder="اكتب اسم الفرع">
-
-<div class="section">
-<label>المنطقة الأمامية — 10 درجات</label>
+<!-- شاشة الدخول -->
+<div id="loginPage" class="login">
+<div class="login-box">
+<h2>🔐 تسجيل الدخول</h2>
+<p>أدخل رمز الدخول للمتابعة</p>
+<input
+    type="password"
+    id="password"
+    placeholder="رمز الدخول"
+>
+<button onclick="login()">
+دخول
+</button>
+<div id="loginError" class="error"></div>
+</div>
+</div>
+<!-- التطبيق -->
+<div id="app" class="container hidden">
+<h1>📊 نظام تقييم فروع المطعم</h1>
+<div class="card">
+<label>الفرع</label>
+<select id="branch">
+<option>بسماية</option>
+<option>غدير</option>
+<option>حي العامل</option>
+<option>البعيثة</option>
+<option>حي الجهاد</option>
+<option>شهداء البياع</option>
+<option>الأعظمية</option>
+<option>بنوك</option>
+<option>شعب</option>
+<option>دورة</option>
+<option>غزالية</option>
+<option>مدائن</option>
+<option>حرية</option>
+</select>
+<label>التاريخ</label>
+<input type="date" id="date">
+</div>
+<div class="card">
+<label>المنطقة الأمامية — 10</label>
 <input type="number" id="front" min="0" max="10">
-</div>
-
-<div class="section">
-<label>المطبخ — 20 درجة</label>
+<label>المطبخ — 20</label>
 <input type="number" id="kitchen" min="0" max="20">
-</div>
-
-<div class="section">
-<label>السلامة العامة — 10 درجات</label>
+<label>السلامة العامة — 10</label>
 <input type="number" id="safety" min="0" max="10">
-</div>
-
-<div class="section">
-<label>التشغيل — 15 درجة</label>
+<label>التشغيل — 15</label>
 <input type="number" id="operation" min="0" max="15">
-</div>
-
-<div class="section">
-<label>الكاشير — 5 درجات</label>
+<label>الكاشير — 5</label>
 <input type="number" id="cashier" min="0" max="5">
-</div>
-
-<div class="section">
-<label>المخزن — 10 درجات</label>
+<label>المخزن — 10</label>
 <input type="number" id="store" min="0" max="10">
-</div>
-
-<div class="section">
-<label>الأمور الممنوعة — 10 درجات</label>
+<label>الأمور الممنوعة — 10</label>
 <input type="number" id="forbidden" min="0" max="10">
-</div>
-
-<div class="section">
-<label>سكن العمال — 10 درجات</label>
+<label>سكن العمال — 10</label>
 <input type="number" id="housing" min="0" max="10">
-</div>
-
-<div class="section">
-<label>سرعة الاستجابة — 10 درجات</label>
+<label>سرعة الاستجابة — 10</label>
 <input type="number" id="response" min="0" max="10">
-</div>
-
-<button onclick="calculate()">حساب التقييم</button>
-
-<div class="result" id="result">
+<button onclick="saveEvaluation()">
+💾 حفظ التقييم
+</button>
+<div id="score" class="score">
 المجموع: 0 / 100
 </div>
-
 </div>
-
+<div class="card">
+<h2>📅 التقرير الأسبوعي</h2>
+<button onclick="weeklyReport()">
+عرض التقرير
+</button>
+<div id="report"></div>
+</div>
+<div class="card">
+<button onclick="logout()">
+🔒 تسجيل الخروج
+</button>
+</div>
+</div>
 <script>
-
-function calculate() {
-
-let total =
-Number(document.getElementById("front").value || 0) +
-Number(document.getElementById("kitchen").value || 0) +
-Number(document.getElementById("safety").value || 0) +
-Number(document.getElementById("operation").value || 0) +
-Number(document.getElementById("cashier").value || 0) +
-Number(document.getElementById("store").value || 0) +
-Number(document.getElementById("forbidden").value || 0) +
-Number(document.getElementById("housing").value || 0) +
-Number(document.getElementById("response").value || 0);
-
-document.getElementById("result").innerText =
+/* رمز الدخول */
+const LOGIN_PASSWORD = "cindrell@123";
+/* الفروع */
+const branches = [
+"بسماية",
+"غدير",
+"حي العامل",
+"البعيثة",
+"حي الجهاد",
+"شهداء البياع",
+"الأعظمية",
+"بنوك",
+"شعب",
+"دورة",
+"غزالية",
+"مدائن",
+"حرية"
+];
+/* أقسام التقييم */
+const fields = [
+"front",
+"kitchen",
+"safety",
+"operation",
+"cashier",
+"store",
+"forbidden",
+"housing",
+"response"
+];
+/* تسجيل الدخول */
+function login(){
+const password =
+document.getElementById("password").value;
+if(password === LOGIN_PASSWORD){
+sessionStorage.setItem("loggedIn","yes");
+document.getElementById("loginPage")
+    .classList.add("hidden");
+document.getElementById("app")
+    .classList.remove("hidden");
+}else{
+document.getElementById("loginError").innerText =
+"رمز الدخول غير صحيح ❌";
+}
+}
+/* تسجيل الخروج */
+function logout(){
+sessionStorage.removeItem("loggedIn");
+document.getElementById("app")
+    .classList.add("hidden");
+document.getElementById("loginPage")
+    .classList.remove("hidden");
+document.getElementById("password").value="";
+}
+/* إذا سبق تسجيل الدخول */
+if(sessionStorage.getItem("loggedIn")==="yes"){
+document.getElementById("loginPage")
+    .classList.add("hidden");
+document.getElementById("app")
+    .classList.remove("hidden");
+}
+/* التاريخ */
+document.getElementById("date").value =
+new Date().toISOString().split("T")[0];
+/* قراءة البيانات */
+function getData(){
+return JSON.parse(
+localStorage.getItem("branchEvaluations") || "[]"
+);
+}
+/* حفظ البيانات */
+function saveData(data){
+localStorage.setItem(
+"branchEvaluations",
+JSON.stringify(data)
+);
+}
+/* حساب التقييم */
+function calculateTotal(){
+let total=0;
+fields.forEach(id=>{
+total += Number(
+document.getElementById(id).value || 0
+);
+});
+return total;
+}
+/* حفظ التقييم */
+function saveEvaluation(){
+const branch =
+document.getElementById("branch").value;
+const date =
+document.getElementById("date").value;
+if(!date){
+alert("اختار التاريخ");
+return;
+}
+const total = calculateTotal();
+if(total > 100){
+alert("المجموع لا يمكن أن يتجاوز 100");
+return;
+}
+let data = getData();
+/* تحديث تقييم نفس الفرع ونفس اليوم */
+data = data.filter(item =>
+!(item.branch === branch &&
+  item.date === date)
+);
+data.push({
+branch:branch,
+date:date,
+score:total
+});
+saveData(data);
+document.getElementById("score").innerText =
 "المجموع: " + total + " / 100";
-
-localStorage.setItem("branchEvaluation", total);
-
+alert("تم حفظ التقييم بنجاح ✅");
 }
-
-window.onload = function() {
-
-let saved = localStorage.getItem("branchEvaluation");
-
-if (saved) {
-document.getElementById("result").innerText =
-"المجموع المحفوظ: " + saved + " / 100";
+/* متوسط الفرع */
+function averageForPeriod(branch,start,end){
+const data = getData();
+const list = data.filter(item =>
+item.branch === branch &&
+item.date >= start &&
+item.date <= end
+);
+if(list.length===0){
+return null;
 }
-
-};
-
+const total =
+list.reduce(
+(sum,item)=>sum + item.score,
+0
+);
+return total / list.length;
+}
+/* الأسبوع */
+function getWeek(offset){
+const now = new Date();
+let day = now.getDay();
+if(day===0){
+day=7;
+}
+const monday = new Date(now);
+monday.setDate(
+now.getDate() -
+day +
+1 +
+(offset*7)
+);
+const sunday = new Date(monday);
+sunday.setDate(
+monday.getDate()+6
+);
+function formatDate(d){
+const y = d.getFullYear();
+const m =
+String(d.getMonth()+1)
+.padStart(2,"0");
+const day =
+String(d.getDate())
+.padStart(2,"0");
+return y+"-"+m+"-"+day;
+}
+return [
+formatDate(monday),
+formatDate(sunday)
+];
+}
+/* التقرير الأسبوعي */
+function weeklyReport(){
+const current = getWeek(0);
+const previous = getWeek(-1);
+let results=[];
+branches.forEach(branch=>{
+const currentAvg =
+averageForPeriod(
+branch,
+current[0],
+current[1]
+);
+const previousAvg =
+averageForPeriod(
+branch,
+previous[0],
+previous[1]
+);
+if(currentAvg !== null){
+let change=null;
+if(previousAvg !== null){
+change =
+currentAvg -
+previousAvg;
+}
+results.push({
+branch:branch,
+current:currentAvg,
+previous:previousAvg,
+change:change
+});
+}
+});
+/* الأفضل إلى الأسوأ */
+results.sort(
+(a,b)=>b.current-a.current
+);
+let html="";
+html +=
+"<p><b>الأسبوع الحالي:</b> "+
+current[0]+
+" إلى "+
+current[1]+
+"</p>";
+html +=
+"<p><b>الأسبوع السابق:</b> "+
+previous[0]+
+" إلى "+
+previous[1]+
+"</p>";
+if(results.length===0){
+html +=
+"<p>لا توجد تقييمات محفوظة لهذا الأسبوع.</p>";
+document.getElementById("report")
+.innerHTML=html;
+return;
+}
+results.forEach((item,index)=>{
+let status="";
+let className="same";
+let percentage="";
+if(item.change===null){
+status="جديد";
+}else{
+if(item.previous !== 0){
+const percent =
+(item.change /
+item.previous) * 100;
+percentage =
+" — "+
+(percent>0?"+":"")+
+percent.toFixed(1)+
+"%";
+}
+if(item.change>0){
+status="⬆️ متحسن";
+className="good";
+}else if(item.change<0){
+status="⬇️ متراجع";
+className="bad";
+}else{
+status="➖ ثابت";
+className="same";
+}
+}
+html +=
+'<div class="row">'+
+"<b>"+
+(index+1)+
+". "+
+item.branch+
+"</b>"+
+"<br>"+
+"هذا الأسبوع: "+
+item.current.toFixed(1)+
+" / 100"+
+"<br>"+
+(
+item.previous===null
+?
+"الأسبوع السابق: لا يوجد تقييم"
+:
+"الأسبوع السابق: "+
+item.previous.toFixed(1)+
+" / 100"
+)+
+"<br>"+
+'<span class="'+
+className+
+'">'+
+status+
+percentage+
+"</span>"+
+"</div>";
+});
+document.getElementById("report")
+.innerHTML=html;
+}
 </script>
-
 </body>
-</html>
+</html> 
