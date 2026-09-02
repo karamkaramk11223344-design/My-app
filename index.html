@@ -4,120 +4,123 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>نظام تقييم الفروع</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 *{box-sizing:border-box}
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f3f4f6;
-    color:#222;
-}
-.login{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-}
-.login-box{
-    width:100%;
-    max-width:400px;
-    background:white;
-    padding:25px;
-    border-radius:18px;
-    box-shadow:0 3px 15px #ccc;
-    text-align:center;
+margin:0;
+font-family:Arial,sans-serif;
+background:#f2f3f5;
+color:#222;
 }
 .container{
-    max-width:800px;
-    margin:auto;
-    padding:15px;
+max-width:900px;
+margin:auto;
+padding:15px;
 }
 .card{
-    background:white;
-    padding:16px;
-    margin:12px 0;
-    border-radius:15px;
-    box-shadow:0 2px 8px #ddd;
+background:white;
+padding:18px;
+margin:12px 0;
+border-radius:15px;
+box-shadow:0 2px 8px #ddd;
 }
-h1,h2{
-    text-align:center;
-}
+h1,h2{text-align:center}
 label{
-    display:block;
-    font-weight:bold;
-    margin-top:10px;
+display:block;
+font-weight:bold;
+margin-top:10px;
 }
 input,select,button{
-    width:100%;
-    padding:12px;
-    margin-top:6px;
-    border-radius:8px;
-    border:1px solid #ccc;
-    font-size:16px;
+width:100%;
+padding:12px;
+margin-top:6px;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:16px;
 }
 button{
-    background:#222;
-    color:white;
-    border:0;
-    cursor:pointer;
-    margin-top:15px;
-}
-.error{
-    color:red;
-    margin-top:10px;
-    font-weight:bold;
+background:#222;
+color:white;
+border:0;
+cursor:pointer;
+margin-top:15px;
 }
 .score{
-    text-align:center;
-    font-size:28px;
-    font-weight:bold;
-    margin-top:15px;
+font-size:28px;
+font-weight:bold;
+text-align:center;
+margin-top:15px;
 }
 .row{
-    padding:12px;
-    margin:8px 0;
-    background:#f7f7f7;
-    border-radius:10px;
+background:#f7f7f7;
+padding:14px;
+margin:10px 0;
+border-radius:12px;
 }
 .good{
-    color:green;
-    font-weight:bold;
+color:green;
+font-weight:bold;
 }
 .bad{
-    color:red;
-    font-weight:bold;
+color:red;
+font-weight:bold;
 }
 .same{
-    color:#777;
-    font-weight:bold;
+color:#777;
+font-weight:bold;
+}
+.strength{
+color:green;
+}
+.weakness{
+color:red;
 }
 .hidden{
-    display:none;
+display:none;
+}
+.reportHeader{
+text-align:center;
+border-bottom:2px solid #222;
+padding-bottom:10px;
+margin-bottom:15px;
+}
+.delete{
+background:#b00020;
+}
+.details{
+background:white;
+padding:10px;
+border-radius:10px;
+margin-top:10px;
 }
 </style>
 </head>
 <body>
-<!-- شاشة الدخول -->
-<div id="loginPage" class="login">
-<div class="login-box">
-<h2>🔐 تسجيل الدخول</h2>
-<p>أدخل رمز الدخول للمتابعة</p>
+<!-- تسجيل الدخول -->
+<div id="loginPage" class="container">
+<div class="card">
+<h1>🔐 تسجيل الدخول</h1>
+<p style="text-align:center">
+نظام تقييم فروع المطعم
+</p>
 <input
-    type="password"
-    id="password"
-    placeholder="رمز الدخول"
+type="password"
+id="password"
+placeholder="أدخل رمز الدخول"
 >
 <button onclick="login()">
 دخول
 </button>
-<div id="loginError" class="error"></div>
+<p id="loginError" class="bad"></p>
 </div>
 </div>
 <!-- التطبيق -->
 <div id="app" class="container hidden">
 <h1>📊 نظام تقييم فروع المطعم</h1>
+<!-- التقييم -->
 <div class="card">
+<h2>📝 التقييم اليومي</h2>
 <label>الفرع</label>
 <select id="branch">
 <option>بسماية</option>
@@ -134,10 +137,8 @@ button{
 <option>مدائن</option>
 <option>حرية</option>
 </select>
-<label>التاريخ</label>
+<label>تاريخ التقييم</label>
 <input type="date" id="date">
-</div>
-<div class="card">
 <label>المنطقة الأمامية — 10</label>
 <input type="number" id="front" min="0" max="10">
 <label>المطبخ — 20</label>
@@ -163,13 +164,40 @@ button{
 المجموع: 0 / 100
 </div>
 </div>
+<!-- مشاهدة التقييمات -->
+<div class="card">
+<h2>📋 مشاهدة التقييمات</h2>
+<label>اختيار الفرع</label>
+<select id="viewBranch" onchange="showEvaluations()">
+<option value="all">كل الفروع</option>
+<option>بسماية</option>
+<option>غدير</option>
+<option>حي العامل</option>
+<option>البعيثة</option>
+<option>حي الجهاد</option>
+<option>شهداء البياع</option>
+<option>الأعظمية</option>
+<option>بنوك</option>
+<option>شعب</option>
+<option>دورة</option>
+<option>غزالية</option>
+<option>مدائن</option>
+<option>حرية</option>
+</select>
+<div id="evaluationsList"></div>
+</div>
+<!-- التقرير الأسبوعي -->
 <div class="card">
 <h2>📅 التقرير الأسبوعي</h2>
 <button onclick="weeklyReport()">
-عرض التقرير
+📊 إنشاء التقرير
+</button>
+<button onclick="downloadPDF()">
+📄 حفظ التقرير PDF
 </button>
 <div id="report"></div>
 </div>
+<!-- تسجيل الخروج -->
 <div class="card">
 <button onclick="logout()">
 🔒 تسجيل الخروج
@@ -177,10 +205,8 @@ button{
 </div>
 </div>
 <script>
-/* رمز الدخول */
-const LOGIN_PASSWORD = "cindrell@123";
-/* الفروع */
-const branches = [
+const LOGIN_PASSWORD="cindrell@123";
+const branches=[
 "بسماية",
 "غدير",
 "حي العامل",
@@ -195,231 +221,287 @@ const branches = [
 "مدائن",
 "حرية"
 ];
-/* أقسام التقييم */
-const fields = [
-"front",
-"kitchen",
-"safety",
-"operation",
-"cashier",
-"store",
-"forbidden",
-"housing",
-"response"
+const sections=[
+{id:"front",name:"المنطقة الأمامية",max:10},
+{id:"kitchen",name:"المطبخ",max:20},
+{id:"safety",name:"السلامة العامة",max:10},
+{id:"operation",name:"التشغيل",max:15},
+{id:"cashier",name:"الكاشير",max:5},
+{id:"store",name:"المخزن",max:10},
+{id:"forbidden",name:"الأمور الممنوعة",max:10},
+{id:"housing",name:"سكن العمال",max:10},
+{id:"response",name:"سرعة الاستجابة",max:10}
 ];
-/* تسجيل الدخول */
 function login(){
-const password =
-document.getElementById("password").value;
-if(password === LOGIN_PASSWORD){
+let password=document.getElementById("password").value;
+if(password===LOGIN_PASSWORD){
 sessionStorage.setItem("loggedIn","yes");
-document.getElementById("loginPage")
-    .classList.add("hidden");
-document.getElementById("app")
-    .classList.remove("hidden");
+document.getElementById("loginPage").classList.add("hidden");
+document.getElementById("app").classList.remove("hidden");
+showEvaluations();
 }else{
-document.getElementById("loginError").innerText =
+document.getElementById("loginError").innerText=
 "رمز الدخول غير صحيح ❌";
 }
 }
-/* تسجيل الخروج */
 function logout(){
 sessionStorage.removeItem("loggedIn");
-document.getElementById("app")
-    .classList.add("hidden");
-document.getElementById("loginPage")
-    .classList.remove("hidden");
-document.getElementById("password").value="";
+location.reload();
 }
-/* إذا سبق تسجيل الدخول */
 if(sessionStorage.getItem("loggedIn")==="yes"){
-document.getElementById("loginPage")
-    .classList.add("hidden");
-document.getElementById("app")
-    .classList.remove("hidden");
+document.getElementById("loginPage").classList.add("hidden");
+document.getElementById("app").classList.remove("hidden");
 }
-/* التاريخ */
-document.getElementById("date").value =
+document.getElementById("date").value=
 new Date().toISOString().split("T")[0];
-/* قراءة البيانات */
 function getData(){
 return JSON.parse(
-localStorage.getItem("branchEvaluations") || "[]"
+localStorage.getItem("branchEvaluations")||"[]"
 );
 }
-/* حفظ البيانات */
 function saveData(data){
 localStorage.setItem(
 "branchEvaluations",
 JSON.stringify(data)
 );
 }
-/* حساب التقييم */
-function calculateTotal(){
-let total=0;
-fields.forEach(id=>{
-total += Number(
-document.getElementById(id).value || 0
-);
-});
-return total;
-}
-/* حفظ التقييم */
 function saveEvaluation(){
-const branch =
-document.getElementById("branch").value;
-const date =
-document.getElementById("date").value;
+let branch=document.getElementById("branch").value;
+let date=document.getElementById("date").value;
 if(!date){
-alert("اختار التاريخ");
+alert("يرجى اختيار تاريخ التقييم");
 return;
 }
-const total = calculateTotal();
-if(total > 100){
-alert("المجموع لا يمكن أن يتجاوز 100");
-return;
-}
-let data = getData();
-/* تحديث تقييم نفس الفرع ونفس اليوم */
-data = data.filter(item =>
-!(item.branch === branch &&
-  item.date === date)
+let scores={};
+let total=0;
+for(let section of sections){
+let value=Number(
+document.getElementById(section.id).value||0
 );
+if(value<0 || value>section.max){
+alert(
+section.name+
+" يجب أن يكون بين 0 و "+
+section.max
+);
+return;
+}
+scores[section.id]=value;
+total+=value;
+}
+let data=getData();
+/* حذف تقييم سابق لنفس الفرع ونفس التاريخ */
+data=data.filter(item=>!(
+item.branch===branch &&
+item.date===date
+));
 data.push({
 branch:branch,
 date:date,
-score:total
+score:total,
+scores:scores
 });
 saveData(data);
-document.getElementById("score").innerText =
-"المجموع: " + total + " / 100";
+document.getElementById("score").innerText=
+"المجموع: "+total+" / 100";
 alert("تم حفظ التقييم بنجاح ✅");
+showEvaluations();
 }
-/* متوسط الفرع */
-function averageForPeriod(branch,start,end){
-const data = getData();
-const list = data.filter(item =>
-item.branch === branch &&
-item.date >= start &&
-item.date <= end
+/* مشاهدة التقييمات */
+function showEvaluations(){
+let selected=
+document.getElementById("viewBranch").value;
+let data=getData();
+if(selected!=="all"){
+data=data.filter(
+item=>item.branch===selected
 );
-if(list.length===0){
-return null;
 }
-const total =
-list.reduce(
-(sum,item)=>sum + item.score,
-0
+data.sort(
+(a,b)=>b.date.localeCompare(a.date)
 );
-return total / list.length;
+let html="";
+if(!data.length){
+html="<p style='text-align:center'>لا توجد تقييمات محفوظة.</p>";
+document.getElementById("evaluationsList").innerHTML=html;
+return;
+}
+data.forEach((item,index)=>{
+html+=`
+<div class="row">
+<h3>🏪 ${item.branch}</h3>
+<b>📅 التاريخ:</b>
+${item.date}
+<br><br>
+<b>⭐ المجموع:</b>
+<span class="${item.score>=80?'good':item.score<60?'bad':'same'}">
+${item.score} / 100
+</span>
+<div class="details">
+<b>تفاصيل التقييم:</b>
+<br><br>
+${sections.map(section=>`
+<div>
+${section.name}:
+<b>
+${item.scores[section.id] || 0}
+/
+${section.max}
+</b>
+</div>
+`).join("")}
+</div>
+<button class="delete"
+onclick="deleteEvaluation('${item.branch}','${item.date}')">
+🗑️ حذف هذا التقييم
+</button>
+</div>
+`;
+});
+document.getElementById("evaluationsList").innerHTML=html;
+}
+/* حذف تقييم */
+function deleteEvaluation(branch,date){
+if(!confirm(
+"هل أنت متأكد من حذف هذا التقييم؟"
+)){
+return;
+}
+let data=getData();
+data=data.filter(item=>!(
+item.branch===branch &&
+item.date===date
+));
+saveData(data);
+showEvaluations();
+alert("تم حذف التقييم ✅");
 }
 /* الأسبوع */
 function getWeek(offset){
-const now = new Date();
-let day = now.getDay();
-if(day===0){
-day=7;
-}
-const monday = new Date(now);
+let now=new Date();
+let day=now.getDay();
+if(day===0)day=7;
+let monday=new Date(now);
 monday.setDate(
-now.getDate() -
-day +
-1 +
-(offset*7)
+now.getDate()-day+1+(offset*7)
 );
-const sunday = new Date(monday);
+let sunday=new Date(monday);
 sunday.setDate(
 monday.getDate()+6
 );
-function formatDate(d){
-const y = d.getFullYear();
-const m =
-String(d.getMonth()+1)
-.padStart(2,"0");
-const day =
-String(d.getDate())
-.padStart(2,"0");
-return y+"-"+m+"-"+day;
+function format(d){
+return d.getFullYear()+
+"-"+
+String(d.getMonth()+1).padStart(2,"0")+
+"-"+
+String(d.getDate()).padStart(2,"0");
 }
-return [
-formatDate(monday),
-formatDate(sunday)
+return[
+format(monday),
+format(sunday)
 ];
 }
-/* التقرير الأسبوعي */
+function average(branch,start,end){
+let data=getData();
+let list=data.filter(item=>
+item.branch===branch &&
+item.date>=start &&
+item.date<=end
+);
+if(!list.length)return null;
+return list.reduce(
+(sum,item)=>sum+item.score,
+0
+)/list.length;
+}
+function sectionAverage(branch,start,end,sectionId){
+let data=getData();
+let list=data.filter(item=>
+item.branch===branch &&
+item.date>=start &&
+item.date<=end
+);
+if(!list.length)return null;
+return list.reduce(
+(sum,item)=>
+sum+
+Number(item.scores?.[sectionId]||0),
+0
+)/list.length;
+}
+/* التقرير */
 function weeklyReport(){
-const current = getWeek(0);
-const previous = getWeek(-1);
+let current=getWeek(0);
+let previous=getWeek(-1);
 let results=[];
 branches.forEach(branch=>{
-const currentAvg =
-averageForPeriod(
+let currentAvg=
+average(
 branch,
 current[0],
 current[1]
 );
-const previousAvg =
-averageForPeriod(
+let previousAvg=
+average(
 branch,
 previous[0],
 previous[1]
 );
-if(currentAvg !== null){
-let change=null;
-if(previousAvg !== null){
-change =
-currentAvg -
-previousAvg;
-}
+if(currentAvg!==null){
 results.push({
 branch:branch,
 current:currentAvg,
 previous:previousAvg,
-change:change
+change:
+previousAvg===null
+?null
+:currentAvg-previousAvg
 });
 }
 });
-/* الأفضل إلى الأسوأ */
 results.sort(
 (a,b)=>b.current-a.current
 );
-let html="";
-html +=
+let today=
+new Date().toLocaleDateString("ar-IQ");
+let html=
+'<div class="reportHeader">'+
+"<h2>📊 التقرير الأسبوعي</h2>"+
+"<p><b>تاريخ التقرير:</b> "+
+today+
+"</p>"+
 "<p><b>الأسبوع الحالي:</b> "+
 current[0]+
 " إلى "+
 current[1]+
-"</p>";
-html +=
+"</p>"+
 "<p><b>الأسبوع السابق:</b> "+
 previous[0]+
 " إلى "+
 previous[1]+
-"</p>";
-if(results.length===0){
-html +=
-"<p>لا توجد تقييمات محفوظة لهذا الأسبوع.</p>";
-document.getElementById("report")
-.innerHTML=html;
+"</p>"+
+"</div>";
+if(!results.length){
+html+="<p>لا توجد تقييمات محفوظة لهذا الأسبوع.</p>";
+document.getElementById("report").innerHTML=html;
 return;
 }
 results.forEach((item,index)=>{
 let status="";
 let className="same";
-let percentage="";
+let percent="";
 if(item.change===null){
 status="جديد";
 }else{
-if(item.previous !== 0){
-const percent =
-(item.change /
-item.previous) * 100;
-percentage =
-" — "+
-(percent>0?"+":"")+
-percent.toFixed(1)+
-"%";
-}
+let p=
+item.previous===0
+?0
+:(item.change/item.previous)*100;
+percent=
+" ("+
+(p>0?"+":"")+
+p.toFixed(1)+
+"%)";
 if(item.change>0){
 status="⬆️ متحسن";
 className="good";
@@ -428,42 +510,110 @@ status="⬇️ متراجع";
 className="bad";
 }else{
 status="➖ ثابت";
-className="same";
 }
 }
-html +=
+let strengths=[];
+let weaknesses=[];
+sections.forEach(section=>{
+let avg=
+sectionAverage(
+item.branch,
+current[0],
+current[1],
+section.id
+);
+if(avg===null)return;
+let percentage=
+(avg/section.max)*100;
+if(percentage>=80){
+strengths.push(
+section.name+
+" "+
+avg.toFixed(1)+
+"/"+
+section.max
+);
+}
+if(percentage<60){
+weaknesses.push(
+section.name+
+" "+
+avg.toFixed(1)+
+"/"+
+section.max
+);
+}
+});
+html+=
 '<div class="row">'+
-"<b>"+
+"<h3>"+
 (index+1)+
 ". "+
 item.branch+
-"</b>"+
-"<br>"+
-"هذا الأسبوع: "+
+"</h3>"+
+"<b>تقييم الأسبوع الحالي:</b> "+
 item.current.toFixed(1)+
-" / 100"+
-"<br>"+
+" / 100<br>"+
+"<b>الأسبوع السابق:</b> "+
 (
 item.previous===null
-?
-"الأسبوع السابق: لا يوجد تقييم"
-:
-"الأسبوع السابق: "+
-item.previous.toFixed(1)+
+?"لا يوجد"
+:item.previous.toFixed(1)+
 " / 100"
 )+
-"<br>"+
+"<br><br>"+
 '<span class="'+
 className+
 '">'+
 status+
-percentage+
+percent+
 "</span>"+
+"<br><br>"+
+'<b class="strength">💪 نقاط القوة:</b><br>'+
+(
+strengths.length
+?strengths.join("<br>")
+:"لا توجد نقاط قوة مميزة"
+)+
+"<br><br>"+
+'<b class="weakness">⚠️ نقاط الضعف:</b><br>'+
+(
+weaknesses.length
+?weaknesses.join("<br>")
+:"لا توجد نقاط ضعف كبيرة"
+)+
 "</div>";
 });
-document.getElementById("report")
-.innerHTML=html;
+document.getElementById("report").innerHTML=html;
+}
+/* PDF */
+function downloadPDF(){
+weeklyReport();
+setTimeout(()=>{
+const {jsPDF}=window.jspdf;
+const pdf=new jsPDF();
+let report=
+document.getElementById("report").innerText;
+pdf.setFontSize(10);
+let lines=
+pdf.splitTextToSize(
+report,
+180
+);
+pdf.text(
+lines,
+10,
+15
+);
+let today=
+new Date()
+.toISOString()
+.split("T")[0];
+pdf.save(
+"تقرير-الفروع-"+today+".pdf"
+);
+},300);
 }
 </script>
 </body>
-</html> 
+</html>
