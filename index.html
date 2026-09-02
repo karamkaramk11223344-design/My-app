@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تقييم فروع المطعم</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+h1 {
+    text-align: center;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.section {
+    margin-top: 15px;
+    padding: 12px;
+    background: #f7f7f7;
+    border-radius: 10px;
+}
+
+.section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+button {
+    background: #222;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.result {
+    margin-top: 20px;
+    padding: 15px;
+    background: #e8f5e9;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>تقييم فروع المطعم</h1>
+
+<label>اسم الفرع</label>
+<input type="text" id="branch" placeholder="اكتب اسم الفرع">
+
+<div class="section">
+<label>المنطقة الأمامية — 10 درجات</label>
+<input type="number" id="front" min="0" max="10">
+</div>
+
+<div class="section">
+<label>المطبخ — 20 درجة</label>
+<input type="number" id="kitchen" min="0" max="20">
+</div>
+
+<div class="section">
+<label>السلامة العامة — 10 درجات</label>
+<input type="number" id="safety" min="0" max="10">
+</div>
+
+<div class="section">
+<label>التشغيل — 15 درجة</label>
+<input type="number" id="operation" min="0" max="15">
+</div>
+
+<div class="section">
+<label>الكاشير — 5 درجات</label>
+<input type="number" id="cashier" min="0" max="5">
+</div>
+
+<div class="section">
+<label>المخزن — 10 درجات</label>
+<input type="number" id="store" min="0" max="10">
+</div>
+
+<div class="section">
+<label>الأمور الممنوعة — 10 درجات</label>
+<input type="number" id="forbidden" min="0" max="10">
+</div>
+
+<div class="section">
+<label>سكن العمال — 10 درجات</label>
+<input type="number" id="housing" min="0" max="10">
+</div>
+
+<div class="section">
+<label>سرعة الاستجابة — 10 درجات</label>
+<input type="number" id="response" min="0" max="10">
+</div>
+
+<button onclick="calculate()">حساب التقييم</button>
+
+<div class="result" id="result">
+المجموع: 0 / 100
+</div>
+
+</div>
+
+<script>
+
+function calculate() {
+
+let total =
+Number(document.getElementById("front").value || 0) +
+Number(document.getElementById("kitchen").value || 0) +
+Number(document.getElementById("safety").value || 0) +
+Number(document.getElementById("operation").value || 0) +
+Number(document.getElementById("cashier").value || 0) +
+Number(document.getElementById("store").value || 0) +
+Number(document.getElementById("forbidden").value || 0) +
+Number(document.getElementById("housing").value || 0) +
+Number(document.getElementById("response").value || 0);
+
+document.getElementById("result").innerText =
+"المجموع: " + total + " / 100";
+
+localStorage.setItem("branchEvaluation", total);
+
+}
+
+window.onload = function() {
+
+let saved = localStorage.getItem("branchEvaluation");
+
+if (saved) {
+document.getElementById("result").innerText =
+"المجموع المحفوظ: " + saved + " / 100";
+}
+
+};
+
+</script>
+
+</body>
+</html>
