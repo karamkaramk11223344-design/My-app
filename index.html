@@ -3,22 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>نظام تقييم فروع المطعم</title>
+<title>نظام تقييم فروع سندرلا</title>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
+
 body{
     margin:0;
     font-family:Arial,Tahoma,sans-serif;
     background:#f2f3f5;
     color:#222;
 }
+
 .container{
-    max-width:1100px;
+    max-width:1200px;
     margin:auto;
     padding:15px;
 }
+
 .card{
     background:#fff;
     padding:18px;
@@ -26,14 +31,15 @@ body{
     border-radius:15px;
     box-shadow:0 2px 8px #ddd;
 }
-h1,h2{
-    text-align:center;
-}
+
+h1,h2{text-align:center}
+
 label{
     display:block;
     font-weight:bold;
     margin-top:10px;
 }
+
 input,select,button{
     width:100%;
     padding:12px;
@@ -42,6 +48,7 @@ input,select,button{
     border:1px solid #ccc;
     font-size:16px;
 }
+
 button{
     background:#222;
     color:#fff;
@@ -49,49 +56,67 @@ button{
     cursor:pointer;
     margin-top:15px;
 }
+
+button:hover{opacity:.9}
+
 .score{
     font-size:28px;
     font-weight:bold;
     text-align:center;
     margin-top:15px;
 }
+
 .row{
     background:#f7f7f7;
     padding:14px;
     margin:10px 0;
     border-radius:12px;
 }
+
 .good{
     color:green;
     font-weight:bold;
 }
+
 .bad{
     color:red;
     font-weight:bold;
 }
+
 .same{
     color:#777;
     font-weight:bold;
 }
+
 .delete{
     background:#b00020;
 }
-.hidden{
-    display:none;
+
+.hidden{display:none}
+
+.viewer-button{
+    background:#146c43;
 }
-/* =========================
-   التقرير
-========================= */
+
+.back-button{
+    background:#555;
+}
+
+/* التقرير */
+
 .report-title{
     text-align:center;
     margin-bottom:20px;
 }
+
 .report-info{
     line-height:1.8;
 }
+
 .report-table-wrapper{
     overflow-x:auto;
 }
+
 .report-table{
     width:100%;
     border-collapse:collapse;
@@ -99,6 +124,7 @@ button{
     direction:rtl;
     font-size:13px;
 }
+
 .report-table th,
 .report-table td{
     border:1px solid #aaa;
@@ -106,20 +132,23 @@ button{
     text-align:center;
     white-space:nowrap;
 }
+
 .report-table th{
     background:#222;
     color:#fff;
 }
+
 .report-table tr:nth-child(even){
     background:#f5f5f5;
 }
+
 .main-percent{
     font-size:17px;
     font-weight:bold;
 }
-/* =========================
-   حالات الفروع
-========================= */
+
+/* الحالات */
+
 .status{
     display:inline-block;
     padding:5px 9px;
@@ -127,58 +156,68 @@ button{
     font-weight:bold;
     white-space:nowrap;
 }
+
 .status-excellent{
     background:#d1e7dd;
     color:#0f5132;
 }
+
 .status-good{
     background:#cfe2ff;
     color:#084298;
 }
+
 .status-follow{
     background:#fff3cd;
     color:#664d03;
 }
+
 .status-weak{
     background:#ffe5d0;
     color:#984c0c;
 }
+
 .status-veryweak{
     background:#f8d7da;
     color:#842029;
 }
+
 .status-new{
     background:#e2e3e5;
     color:#41464b;
 }
-/* =========================
-   التحسن والتراجع
-========================= */
+
+/* الحركة */
+
 .movement-grid{
     display:grid;
     grid-template-columns:1fr 1fr 1fr;
     gap:15px;
     margin-top:20px;
 }
+
 .movement-box{
     border:1px solid #ddd;
     border-radius:12px;
     padding:15px;
     background:#fafafa;
 }
+
 .movement-box h3{
     margin-top:0;
 }
+
 .movement-item{
     padding:9px;
     border-bottom:1px solid #ddd;
 }
+
 .movement-item:last-child{
     border-bottom:0;
 }
-/* =========================
-   تفاصيل القوة والضعف
-========================= */
+
+/* التفاصيل */
+
 .branch-detail{
     border:1px solid #ccc;
     border-radius:12px;
@@ -187,6 +226,7 @@ button{
     page-break-inside:avoid;
     background:#fafafa;
 }
+
 .branch-detail-header{
     display:flex;
     justify-content:space-between;
@@ -196,46 +236,52 @@ button{
     border-bottom:2px solid #222;
     padding-bottom:10px;
 }
+
 .section-detail-table{
     width:100%;
     border-collapse:collapse;
     margin-top:12px;
 }
+
 .section-detail-table th,
 .section-detail-table td{
     border:1px solid #ccc;
     padding:8px;
     text-align:center;
 }
+
 .section-detail-table th{
     background:#eee;
 }
+
 .section-weak{
     color:#b00020;
     font-weight:bold;
 }
+
 .section-strong{
     color:green;
     font-weight:bold;
 }
+
 .summary-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:12px;
     margin-top:15px;
 }
+
 .summary-box{
     background:#fff;
     border:1px solid #ddd;
     padding:12px;
     border-radius:10px;
 }
+
 .summary-box h4{
     margin-top:0;
 }
-/* =========================
-   نقاط الضعف العامة
-========================= */
+
 .general-box{
     margin-top:20px;
     border:1px solid #ccc;
@@ -243,6 +289,7 @@ button{
     padding:15px;
     background:#fff;
 }
+
 .general-item{
     display:flex;
     justify-content:space-between;
@@ -250,95 +297,142 @@ button{
     padding:9px;
     border-bottom:1px solid #eee;
 }
+
 .general-item:last-child{
     border-bottom:0;
 }
-/* =========================
-   متجاوب للموبايل
-========================= */
+
+/* اختيار التقرير */
+
+.report-selector{
+    background:#f7f7f7;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.report-selector label{
+    margin-top:0;
+}
+
+/* رسالة التحميل */
+
+.loading{
+    text-align:center;
+    padding:20px;
+    font-weight:bold;
+}
+
+/* موبايل */
+
 @media(max-width:800px){
+
     .movement-grid{
         grid-template-columns:1fr;
     }
+
     .summary-grid{
         grid-template-columns:1fr;
     }
+
+    .report-table{
+        font-size:11px;
+    }
 }
-/* =========================
-   الطباعة PDF
-========================= */
+
+/* الطباعة */
+
 @media print{
+
     @page{
         size:A4 landscape;
         margin:10mm;
     }
+
     body{
         background:#fff;
         font-family:Arial,Tahoma,sans-serif;
     }
-    #loginPage{
+
+    #loginPage,
+    #viewerPage{
         display:none !important;
     }
+
     #app > h1{
         display:none !important;
     }
+
     #app > .card:not(:has(#report)){
         display:none !important;
     }
+
     #app{
         display:block !important;
         max-width:100%;
         padding:0;
     }
+
     .card{
         box-shadow:none;
         margin:0;
         padding:0;
     }
-    #report{
+
+    #report,
+    #viewerReport{
         display:block !important;
         width:100%;
         direction:rtl;
     }
+
     .no-print,
     button,
     input,
     select{
         display:none !important;
     }
+
     .report-table{
         display:table !important;
         width:100%;
         font-size:9px;
     }
+
     .report-table th,
     .report-table td{
         border:1px solid #000;
         padding:5px 3px;
     }
+
     .report-table th{
         background:#eee !important;
         color:#000 !important;
     }
+
     .branch-detail{
         page-break-inside:avoid;
         border:1px solid #000;
         background:#fff;
     }
+
     .section-detail-table th,
     .section-detail-table td{
         border:1px solid #000;
         font-size:9px;
         padding:5px;
     }
+
     .movement-grid{
         display:grid;
         grid-template-columns:1fr 1fr 1fr;
     }
+
     .summary-grid{
         display:grid;
         grid-template-columns:1fr 1fr;
     }
+
     .general-box{
         page-break-inside:avoid;
         border:1px solid #000;
@@ -346,39 +440,141 @@ button{
 }
 </style>
 </head>
+
 <body>
-<!-- =========================
-     تسجيل الدخول
-========================= -->
+
+<!-- =====================================================
+     الصفحة الرئيسية
+===================================================== -->
+
 <div id="loginPage" class="container">
+
     <div class="card">
-        <h1>🔐 تسجيل الدخول</h1>
+
+        <h1>📊 نظام تقييم فروع سندرلا</h1>
+
         <p style="text-align:center">
-            نظام تقييم فروع المطعم
+            اختر طريقة الدخول
         </p>
+
+        <button onclick="showAdminLogin()">
+            🔐 دخول الإدارة
+        </button>
+
+        <button
+            class="viewer-button"
+            onclick="openViewer()"
+        >
+            👁️ مشاهدة التقارير الرئيسية
+        </button>
+
+    </div>
+
+    <div id="adminLoginBox" class="card hidden">
+
+        <h2>🔐 تسجيل دخول الإدارة</h2>
+
         <input
             type="password"
             id="password"
             placeholder="أدخل رمز الدخول"
         >
+
         <button onclick="login()">
             دخول
         </button>
+
         <p id="loginError" class="bad"></p>
+
+        <button
+            class="back-button"
+            onclick="backHome()"
+        >
+            ↩️ رجوع
+        </button>
+
     </div>
+
 </div>
-<!-- =========================
-     التطبيق
-========================= -->
+
+
+<!-- =====================================================
+     وضع مشاهدة التقارير
+===================================================== -->
+
+<div id="viewerPage" class="container hidden">
+
+    <div class="card">
+
+        <h1>👁️ التقارير الرئيسية</h1>
+
+        <p style="text-align:center">
+            نظام تقييم فروع سندرلا
+        </p>
+
+        <div class="report-selector">
+
+            <label>
+                اختر التقرير الأسبوعي
+            </label>
+
+            <select
+                id="viewerWeek"
+                onchange="showViewerReport()"
+            >
+            </select>
+
+        </div>
+
+        <button onclick="printViewerPDF()">
+            📄 حفظ التقرير PDF
+        </button>
+
+        <button
+            class="back-button"
+            onclick="backToHomeFromViewer()"
+        >
+            ↩️ رجوع
+        </button>
+
+    </div>
+
+    <div class="card">
+
+        <div id="viewerReport">
+
+            <div class="loading">
+                جاري تحميل التقارير...
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     التطبيق الإداري
+===================================================== -->
+
 <div id="app" class="container hidden">
-<h1>📊 نظام تقييم فروع المطعم</h1>
-<!-- =========================
+
+<h1>📊 نظام تقييم فروع سندرلا</h1>
+
+
+<!-- =====================================================
      التقييم اليومي
-========================= -->
+===================================================== -->
+
 <div class="card">
+
 <h2>📝 التقييم اليومي</h2>
+
 <label>الفرع</label>
+
 <select id="branch">
+
 <option>بسماية</option>
 <option>غدير</option>
 <option>حي العامل</option>
@@ -392,44 +588,71 @@ button{
 <option>غزالية</option>
 <option>مدائن</option>
 <option>حرية</option>
+
 </select>
+
+
 <label>تاريخ التقييم</label>
+
 <input
     type="date"
     id="date"
 >
+
+
 <label>المنطقة الأمامية — 10</label>
 <input type="number" id="front" min="0" max="10" step="1">
+
 <label>المطبخ — 20</label>
 <input type="number" id="kitchen" min="0" max="20" step="1">
+
 <label>السلامة العامة — 10</label>
 <input type="number" id="safety" min="0" max="10" step="1">
+
 <label>التشغيل — 15</label>
 <input type="number" id="operation" min="0" max="15" step="1">
+
 <label>الكاشير — 5</label>
 <input type="number" id="cashier" min="0" max="5" step="1">
+
 <label>المخزن — 10</label>
 <input type="number" id="store" min="0" max="10" step="1">
+
 <label>الأمور الممنوعة — 10</label>
 <input type="number" id="forbidden" min="0" max="10" step="1">
+
 <label>سكن العمال — 10</label>
 <input type="number" id="housing" min="0" max="10" step="1">
+
 <label>سرعة الاستجابة — 10</label>
 <input type="number" id="response" min="0" max="10" step="1">
+
+
 <button onclick="saveEvaluation()">
 💾 حفظ التقييم اليومي
 </button>
+
 <div id="score" class="score">
 المجموع: 0 / 100
 </div>
+
 </div>
-<!-- =========================
+
+
+<!-- =====================================================
      التقييمات اليومية
-========================= -->
+===================================================== -->
+
 <div class="card">
+
 <h2>📋 التقييمات اليومية</h2>
+
 <select id="viewBranch" onchange="showEvaluations()">
-<option value="all">كل الفروع</option>
+
+<option value="all">
+كل الفروع
+</option>
+
 <option>بسماية</option>
 <option>غدير</option>
 <option>حي العامل</option>
@@ -443,45 +666,87 @@ button{
 <option>غزالية</option>
 <option>مدائن</option>
 <option>حرية</option>
+
 </select>
+
 <div id="evaluationsList"></div>
+
 </div>
-<!-- =========================
-     التقرير الأسبوعي
-========================= -->
+
+
+<!-- =====================================================
+     التقرير الإداري
+===================================================== -->
+
 <div class="card">
+
 <h2>📊 التقرير الأسبوعي</h2>
+
 <button onclick="weeklyReport()">
-عرض التقرير
+عرض التقرير الحالي
 </button>
+
 <button onclick="downloadPDF()">
 📄 حفظ التقرير PDF بالعربي
 </button>
+
 <button
     onclick="deleteWeeklyReport()"
     style="background:#b00020;"
 >
-🗑️ حذف التقرير الأسبوعي
+🗑️ حذف التقرير الأسبوعي الحالي
 </button>
+
 <div id="report"></div>
+
 </div>
-<!-- =========================
+
+
+<!-- =====================================================
      خروج
-========================= -->
+===================================================== -->
+
 <div class="card">
+
 <button onclick="logout()">
 🔒 تسجيل الخروج
 </button>
+
 </div>
+
 </div>
+
+
 <script>
-/* =========================
+
+/* =====================================================
+   إعداد Supabase
+===================================================== */
+
+const SUPABASE_URL =
+"https://ttmmbrunqzckmpgywnrx.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_xR4sA7Y6fNkSjsFxijqpsA_c1cvKV4a";
+
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* =====================================================
    رمز الدخول
-========================= */
+===================================================== */
+
 const LOGIN_PASSWORD="cindrell@123";
-/* =========================
+
+
+/* =====================================================
    الفروع
-========================= */
+===================================================== */
+
 const branches=[
 "بسماية",
 "غدير",
@@ -497,9 +762,12 @@ const branches=[
 "مدائن",
 "حرية"
 ];
-/* =========================
+
+
+/* =====================================================
    الأقسام
-========================= */
+===================================================== */
+
 const sections=[
 {
     id:"front",
@@ -547,193 +815,359 @@ const sections=[
     max:10
 }
 ];
-/* =========================
+
+
+/* =====================================================
+   البيانات العامة
+===================================================== */
+
+let allData=[];
+
+
+/* =====================================================
+   تحميل البيانات من Supabase
+===================================================== */
+
+async function loadData(){
+
+    const {data,error}=await supabaseClient
+        .from("branch_evaluations")
+        .select("*")
+        .order("evaluation_date",{ascending:false});
+
+    if(error){
+
+        console.error(error);
+
+        alert(
+            "حدث خطأ في تحميل البيانات من Supabase.\n\n"+
+            error.message
+        );
+
+        return [];
+
+    }
+
+    allData=(data || []).map(item=>({
+
+        branch:item.branch,
+
+        date:item.evaluation_date,
+
+        score:Number(item.total_score),
+
+        scores:item.scores || {}
+
+    }));
+
+    return allData;
+}
+
+
+/* =====================================================
+   فتح تسجيل الإدارة
+===================================================== */
+
+function showAdminLogin(){
+
+    document
+        .getElementById("adminLoginBox")
+        .classList.remove("hidden");
+
+}
+
+
+/* =====================================================
+   الرجوع
+===================================================== */
+
+function backHome(){
+
+    document
+        .getElementById("adminLoginBox")
+        .classList.add("hidden");
+
+    document.getElementById("password").value="";
+
+}
+
+
+/* =====================================================
    تسجيل الدخول
-========================= */
-function login(){
+===================================================== */
+
+async function login(){
+
     const password=
         document.getElementById("password").value;
-    if(password===LOGIN_PASSWORD){
-        sessionStorage.setItem(
-            "loggedIn",
-            "yes"
-        );
-        document
-            .getElementById("loginPage")
-            .classList.add("hidden");
-        document
-            .getElementById("app")
-            .classList.remove("hidden");
-        showEvaluations();
-        weeklyReport();
-    }else{
+
+    if(password!==LOGIN_PASSWORD){
+
         document
             .getElementById("loginError")
             .innerText=
             "رمز الدخول غير صحيح ❌";
+
+        return;
     }
-}
-/* =========================
-   تسجيل الخروج
-========================= */
-function logout(){
-    sessionStorage.removeItem(
-        "loggedIn"
+
+    sessionStorage.setItem(
+        "loggedIn",
+        "yes"
     );
-    location.reload();
-}
-/* =========================
-   فتح التطبيق
-========================= */
-if(
-    sessionStorage.getItem("loggedIn")==="yes"
-){
+
     document
         .getElementById("loginPage")
         .classList.add("hidden");
+
     document
         .getElementById("app")
         .classList.remove("hidden");
+
+    await loadData();
+
     showEvaluations();
+
     weeklyReport();
 }
-/* =========================
-   تاريخ اليوم
-========================= */
-document.getElementById("date").value=
-new Date().toISOString().split("T")[0];
-/* =========================
-   البيانات
-========================= */
-function getData(){
-    try{
-        return JSON.parse(
-            localStorage.getItem(
-                "branchEvaluations"
-            ) || "[]"
-        );
-    }catch(e){
-        return [];
-    }
-}
-function saveData(data){
-    localStorage.setItem(
-        "branchEvaluations",
-        JSON.stringify(data)
+
+
+/* =====================================================
+   تسجيل الخروج
+===================================================== */
+
+function logout(){
+
+    sessionStorage.removeItem(
+        "loggedIn"
     );
+
+    location.reload();
+
 }
-/* =========================
+
+
+/* =====================================================
+   فتح التطبيق إذا كان مسجل دخول
+===================================================== */
+
+async function initialize(){
+
+    document.getElementById("date").value=
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+    if(
+        sessionStorage.getItem("loggedIn")==="yes"
+    ){
+
+        document
+            .getElementById("loginPage")
+            .classList.add("hidden");
+
+        document
+            .getElementById("app")
+            .classList.remove("hidden");
+
+        await loadData();
+
+        showEvaluations();
+
+        weeklyReport();
+
+    }
+
+}
+
+
+/* =====================================================
    حفظ التقييم
-========================= */
-function saveEvaluation(){
+===================================================== */
+
+async function saveEvaluation(){
+
     const branch=
         document.getElementById("branch").value;
+
     const date=
         document.getElementById("date").value;
+
     if(!date){
+
         alert(
             "يرجى اختيار تاريخ التقييم"
         );
+
         return;
     }
+
     let scores={};
+
     let total=0;
+
     for(const section of sections){
+
         const input=
             document.getElementById(
                 section.id
             );
+
         const rawValue=
             input.value;
+
         if(rawValue===""){
+
             alert(
                 "يرجى إدخال درجة "+
                 section.name
             );
+
             input.focus();
+
             return;
         }
+
         const value=
             Number(rawValue);
+
         if(
             !Number.isInteger(value) ||
             value<0 ||
             value>section.max
         ){
+
             alert(
                 section.name+
                 " يجب أن يكون رقماً صحيحاً بين 0 و "+
                 section.max
             );
+
             input.focus();
+
             return;
         }
+
         scores[section.id]=value;
+
         total+=value;
     }
-    let data=getData();
-    data=data.filter(item=>!(
-        item.branch===branch &&
-        item.date===date
-    ));
-    data.push({
-        branch:branch,
-        date:date,
-        score:total,
-        scores:scores
-    });
-    saveData(data);
+
+
+    const {error}=await supabaseClient
+        .from("branch_evaluations")
+        .upsert({
+
+            branch:branch,
+
+            evaluation_date:date,
+
+            total_score:total,
+
+            scores:scores
+
+        },{
+            onConflict:"branch,evaluation_date"
+        });
+
+
+    if(error){
+
+        alert(
+            "حدث خطأ أثناء الحفظ:\n\n"+
+            error.message
+        );
+
+        console.error(error);
+
+        return;
+    }
+
+
+    await loadData();
+
+
     document.getElementById(
         "score"
     ).innerText=
         "المجموع: "+
         total+
         " / 100";
+
+
     alert(
-        "تم حفظ التقييم اليومي ✅\n\n"+
+        "تم حفظ التقييم اليومي بنجاح ✅\n\n"+
         "الفرع: "+branch+
         "\nالنتيجة: "+total+"%"
     );
+
+
     showEvaluations();
+
     weeklyReport();
+
 }
-/* =========================
-   عرض التقييمات
-========================= */
+
+
+/* =====================================================
+   عرض التقييمات اليومية
+===================================================== */
+
 function showEvaluations(){
+
     const selected=
         document.getElementById(
             "viewBranch"
         ).value;
-    let data=getData();
+
+    let data=[...allData];
+
     if(selected!=="all"){
+
         data=data.filter(
             item=>item.branch===selected
         );
+
     }
+
     data.sort(
         (a,b)=>
             b.date.localeCompare(a.date)
     );
+
+
     let html="";
+
+
     if(!data.length){
+
         document.getElementById(
             "evaluationsList"
         ).innerHTML=
             "<p style='text-align:center'>لا توجد تقييمات.</p>";
+
         return;
     }
+
+
     data.forEach(item=>{
+
         html+=`
+
         <div class="row">
+
             <h3>
                 🏪 ${item.branch}
             </h3>
+
             <b>التاريخ:</b>
             ${item.date}
+
             <br><br>
+
             <b>النتيجة:</b>
-            <span class="percent ${
+
+            <span class="${
                 item.score>=80
                 ?"good"
                 :item.score<60
@@ -742,15 +1176,23 @@ function showEvaluations(){
             }">
                 ${item.score}%
             </span>
+
             <br><br>
+
             <details>
+
                 <summary>
                     مشاهدة تفاصيل التقييم
                 </summary>
+
                 <br>
+
                 ${sections.map(section=>`
+
                     <div>
+
                         ${section.name}:
+
                         <b>
                             ${
                                 item.scores &&
@@ -759,65 +1201,111 @@ function showEvaluations(){
                                 :0
                             }/${section.max}
                         </b>
+
                     </div>
+
                 `).join("")}
+
             </details>
+
             <button
                 class="delete"
                 onclick="deleteEvaluation('${item.branch}','${item.date}')"
             >
                 🗑️ حذف
             </button>
+
         </div>
+
         `;
     });
+
+
     document.getElementById(
         "evaluationsList"
     ).innerHTML=html;
+
 }
-/* =========================
+
+
+/* =====================================================
    حذف تقييم يومي
-========================= */
-function deleteEvaluation(
+===================================================== */
+
+async function deleteEvaluation(
     branch,
     date
 ){
+
     if(!confirm(
         "هل تريد حذف هذا التقييم؟"
     )){
+
         return;
     }
-    let data=getData();
-    data=data.filter(item=>!(
-        item.branch===branch &&
-        item.date===date
-    ));
-    saveData(data);
+
+
+    const {error}=await supabaseClient
+        .from("branch_evaluations")
+        .delete()
+        .eq("branch",branch)
+        .eq("evaluation_date",date);
+
+
+    if(error){
+
+        alert(
+            "حدث خطأ أثناء الحذف:\n\n"+
+            error.message
+        );
+
+        return;
+    }
+
+
+    await loadData();
+
     showEvaluations();
+
     weeklyReport();
+
 }
-/* =========================
+
+
+/* =====================================================
    الأسبوع
-========================= */
+===================================================== */
+
 function getWeek(offset=0){
+
     const now=new Date();
+
     let day=now.getDay();
+
     if(day===0){
         day=7;
     }
+
     const monday=new Date(now);
+
     monday.setHours(0,0,0,0);
+
     monday.setDate(
         now.getDate()-
         day+
         1+
         (offset*7)
     );
+
     const sunday=new Date(monday);
+
     sunday.setDate(
         monday.getDate()+6
     );
+
+
     function format(date){
+
         return date.getFullYear()+
         "-"+
         String(
@@ -827,246 +1315,457 @@ function getWeek(offset=0){
         String(
             date.getDate()
         ).padStart(2,"0");
+
     }
+
+
     return[
         format(monday),
         format(sunday)
     ];
+
 }
-/* =========================
+
+
+/* =====================================================
+   حساب أسبوع من تاريخ محدد
+===================================================== */
+
+function getWeekFromDate(dateString){
+
+    const d=new Date(
+        dateString+"T00:00:00"
+    );
+
+    let day=d.getDay();
+
+    if(day===0){
+        day=7;
+    }
+
+    const monday=new Date(d);
+
+    monday.setDate(
+        d.getDate()-day+1
+    );
+
+    const sunday=new Date(monday);
+
+    sunday.setDate(
+        monday.getDate()+6
+    );
+
+
+    function format(date){
+
+        return date.getFullYear()+
+        "-"+
+        String(date.getMonth()+1).padStart(2,"0")+
+        "-"+
+        String(date.getDate()).padStart(2,"0");
+
+    }
+
+
+    return[
+        format(monday),
+        format(sunday)
+    ];
+
+}
+
+
+/* =====================================================
    متوسط الفرع
-========================= */
+===================================================== */
+
 function weeklyAverage(
     branch,
     start,
     end
 ){
-    const data=getData();
-    const list=data.filter(item=>
+
+    const list=allData.filter(item=>
+
         item.branch===branch &&
+
         item.date>=start &&
+
         item.date<=end
+
     );
+
+
     if(!list.length){
         return null;
     }
+
+
     const total=
         list.reduce(
             (sum,item)=>
                 sum+Number(item.score),
             0
         );
+
+
     return total/list.length;
+
 }
-/* =========================
+
+
+/* =====================================================
    نسبة الأقسام
-========================= */
+===================================================== */
+
 function weeklySectionPercentages(
     branch,
     start,
     end
 ){
-    const data=getData();
-    const list=data.filter(item=>
+
+    const list=allData.filter(item=>
+
         item.branch===branch &&
+
         item.date>=start &&
+
         item.date<=end
+
     );
+
+
     return sections.map(section=>{
+
         if(!list.length){
             return null;
         }
+
         let total=0;
+
         let count=0;
+
+
         list.forEach(item=>{
+
             if(
                 item.scores &&
                 item.scores[section.id]!==undefined
             ){
+
                 total+=Number(
                     item.scores[section.id]
                 );
+
                 count++;
+
             }
+
         });
+
+
         if(count===0){
             return null;
         }
+
+
         return(
             (total/count)/
             section.max
         )*100;
+
     });
+
 }
-/* =========================
+
+
+/* =====================================================
    الحالة
-========================= */
+===================================================== */
+
 function getStatus(score){
+
     if(score===null){
+
         return{
             text:"🆕 لا توجد مقارنة",
             className:"status-new"
         };
+
     }
+
     if(score>=90){
+
         return{
             text:"🟢 ممتاز",
             className:"status-excellent"
         };
+
     }
+
     if(score>=80){
+
         return{
             text:"🔵 جيد جداً",
             className:"status-good"
         };
+
     }
+
     if(score>=70){
+
         return{
             text:"🟡 يحتاج متابعة",
             className:"status-follow"
         };
+
     }
+
     if(score>=60){
+
         return{
             text:"🟠 ضعيف",
             className:"status-weak"
         };
+
     }
+
     return{
         text:"🔴 ضعيف جداً",
         className:"status-veryweak"
     };
+
 }
-/* =========================
-   التقرير الأسبوعي
-========================= */
-function weeklyReport(){
-    const current=
-        getWeek(0);
-    const previous=
-        getWeek(-1);
+
+
+/* =====================================================
+   بناء التقرير
+===================================================== */
+
+function buildReport(
+    start,
+    end
+){
+
+    const previousWeek=
+        getWeekFromDate(
+            new Date(
+                new Date(start+"T00:00:00")
+                .getTime()-
+                24*60*60*1000
+            )
+            .toISOString()
+            .split("T")[0]
+        );
+
+
     let results=[];
+
+
     branches.forEach(branch=>{
+
         const currentAverage=
             weeklyAverage(
                 branch,
-                current[0],
-                current[1]
+                start,
+                end
             );
+
+
         const previousAverage=
             weeklyAverage(
                 branch,
-                previous[0],
-                previous[1]
+                previousWeek[0],
+                previousWeek[1]
             );
+
+
         if(currentAverage!==null){
+
             let change=null;
+
             if(previousAverage!==null){
+
                 change=
                     currentAverage-
                     previousAverage;
+
             }
+
+
             results.push({
+
                 branch:branch,
+
                 current:currentAverage,
+
                 previous:previousAverage,
+
                 change:change
+
             });
+
         }
+
     });
+
+
     results.sort(
         (a,b)=>
             b.current-a.current
     );
+
+
     let html=`
+
     <div class="report-title">
+
         <h2>
             📊 التقرير الأسبوعي الرئيسي
         </h2>
+
         <div class="report-info">
+
             <div>
-                <b>تاريخ إصدار التقرير:</b>
-                ${new Date().toLocaleDateString("ar-IQ")}
+                <b>الفترة:</b>
+                ${start} إلى ${end}
             </div>
-            <div>
-                <b>الأسبوع:</b>
-                ${current[0]} إلى ${current[1]}
-            </div>
+
         </div>
+
     </div>
+
+
     <h3>
         🏆 الترتيب الرئيسي للفروع
     </h3>
+
     <div class="report-table-wrapper">
+
     <table class="report-table">
+
         <thead>
+
             <tr>
+
                 <th>الترتيب</th>
+
                 <th>الفرع</th>
+
                 <th>الأمامية</th>
+
                 <th>المطبخ</th>
+
                 <th>السلامة</th>
+
                 <th>التشغيل</th>
+
                 <th>الكاشير</th>
+
                 <th>المخزن</th>
+
                 <th>الممنوعة</th>
+
                 <th>السكن</th>
+
                 <th>الاستجابة</th>
+
                 <th>نسبة الأسبوع</th>
+
                 <th>الأسبوع السابق</th>
+
                 <th>التغيير</th>
+
                 <th>الحالة</th>
+
             </tr>
+
         </thead>
+
         <tbody>
+
     `;
+
+
     if(!results.length){
+
         html+=`
+
             <tr>
+
                 <td colspan="15">
                     لا توجد تقييمات لهذا الأسبوع
                 </td>
+
             </tr>
+
         `;
+
     }else{
+
         results.forEach(
             (item,index)=>{
+
             const percentages=
                 weeklySectionPercentages(
                     item.branch,
-                    current[0],
-                    current[1]
+                    start,
+                    end
                 );
+
+
             let changeText="—";
+
             let changeClass="same";
+
+
             if(item.change!==null){
+
                 if(item.change>0){
+
                     changeText=
                         "+"+
                         item.change.toFixed(1)+
                         " نقطة";
+
                     changeClass="good";
+
                 }else if(item.change<0){
+
                     changeText=
                         item.change.toFixed(1)+
                         " نقطة";
+
                     changeClass="bad";
+
                 }else{
+
                     changeText=
                         "0.0 نقطة";
+
                 }
+
             }
+
+
             const status=
                 getStatus(item.current);
+
+
             html+=`
+
             <tr>
+
                 <td>
                     <b>${index+1}</b>
                 </td>
+
                 <td>
                     <b>${item.branch}</b>
                 </td>
+
                 ${percentages.map(p=>`
+
                     <td>
                         ${
                             p===null
@@ -1074,41 +1773,76 @@ function weeklyReport(){
                             :p.toFixed(1)+"%"
                         }
                     </td>
+
                 `).join("")}
+
+
                 <td class="main-percent">
+
                     ${item.current.toFixed(1)}%
+
                 </td>
+
+
                 <td>
+
                     ${
                         item.previous===null
                         ?"—"
                         :item.previous.toFixed(1)+"%"
                     }
+
                 </td>
+
+
                 <td class="${changeClass}">
+
                     <b>
                         ${changeText}
                     </b>
+
                 </td>
+
+
                 <td>
+
                     <span class="status ${status.className}">
+
                         ${status.text}
+
                     </span>
+
                 </td>
+
             </tr>
+
             `;
+
         });
+
     }
+
+
     html+=`
+
         </tbody>
+
     </table>
+
     </div>
+
+
     <br>
+
     <h3>
         📈📉 حركة الفروع مقارنة بالأسبوع السابق
     </h3>
+
     <div class="movement-grid">
+
     `;
+
+
     const improved=
         results
         .filter(item=>
@@ -1119,6 +1853,8 @@ function weeklyReport(){
             (a,b)=>
                 b.change-a.change
         );
+
+
     const declined=
         results
         .filter(item=>
@@ -1129,110 +1865,193 @@ function weeklyReport(){
             (a,b)=>
                 a.change-b.change
         );
+
+
     const unchanged=
         results
         .filter(item=>
             item.change!==null &&
             Math.abs(item.change)<=0.05
         );
+
+
     html+=`
+
         <div class="movement-box">
+
             <h3 class="good">
                 📈 الفروع المتحسنة
             </h3>
+
     `;
+
+
     if(!improved.length){
+
         html+=`
             <p>لا توجد فروع متحسنة.</p>
         `;
+
     }else{
+
         improved.forEach(item=>{
+
             html+=`
+
                 <div class="movement-item">
+
                     <b>${item.branch}</b>
+
                     <span class="good">
+
                         +${item.change.toFixed(1)} نقطة
+
                     </span>
+
                 </div>
+
             `;
+
         });
+
     }
+
+
     html+=`
+
         </div>
+
         <div class="movement-box">
+
             <h3 class="bad">
                 📉 الفروع المتراجعة
             </h3>
+
     `;
+
+
     if(!declined.length){
+
         html+=`
             <p>لا توجد فروع متراجعة.</p>
         `;
+
     }else{
+
         declined.forEach(item=>{
+
             html+=`
+
                 <div class="movement-item">
+
                     <b>${item.branch}</b>
+
                     <span class="bad">
+
                         ${item.change.toFixed(1)} نقطة
+
                     </span>
+
                 </div>
+
             `;
+
         });
+
     }
+
+
     html+=`
+
         </div>
+
         <div class="movement-box">
+
             <h3 class="same">
                 ➖ الفروع الثابتة
             </h3>
+
     `;
+
+
     if(!unchanged.length){
+
         html+=`
             <p>لا توجد فروع ثابتة.</p>
         `;
+
     }else{
+
         unchanged.forEach(item=>{
+
             html+=`
+
                 <div class="movement-item">
+
                     <b>${item.branch}</b>
+
                     <span class="same">
                         0.0 نقطة
                     </span>
+
                 </div>
+
             `;
+
         });
+
     }
+
+
     html+=`
+
         </div>
+
     </div>
+
+
     <br>
+
     <h3>
         📋 نقاط القوة والضعف لكل فرع
     </h3>
+
     `;
-    /* =========================
-       تفاصيل الفروع
-    ========================= */
+
+
     results.forEach(item=>{
+
         const percentages=
             weeklySectionPercentages(
                 item.branch,
-                current[0],
-                current[1]
+                start,
+                end
             );
+
+
         const valid=[];
+
+
         sections.forEach(
             (section,index)=>{
+
                 if(percentages[index]!==null){
+
                     valid.push({
+
                         name:section.name,
+
                         percentage:
                             percentages[index]
+
                     });
+
                 }
+
             }
         );
+
+
         const weakest=
             [...valid]
             .sort(
@@ -1240,6 +2059,8 @@ function weeklyReport(){
                     a.percentage-b.percentage
             )
             .slice(0,3);
+
+
         const strongest=
             [...valid]
             .sort(
@@ -1247,127 +2068,235 @@ function weeklyReport(){
                     b.percentage-a.percentage
             )
             .slice(0,3);
+
+
         const status=
             getStatus(item.current);
+
+
         html+=`
+
         <div class="branch-detail">
+
             <div class="branch-detail-header">
+
                 <h3>
                     🏪 ${item.branch}
                 </h3>
+
                 <div>
+
                     <b>
                         النسبة الكلية:
                     </b>
+
                     <span class="main-percent">
+
                         ${item.current.toFixed(1)}%
+
                     </span>
+
                     &nbsp;
+
                     <span class="status ${status.className}">
+
                         ${status.text}
+
                     </span>
+
                 </div>
+
             </div>
+
+
             <table class="section-detail-table">
+
                 <thead>
+
                     <tr>
+
                         <th>القسم</th>
+
                         <th>نسبة الأسبوع</th>
+
                     </tr>
+
                 </thead>
+
                 <tbody>
+
         `;
+
+
         valid.forEach(section=>{
+
             let className="";
+
+
             if(section.percentage<70){
+
                 className="section-weak";
+
             }else if(section.percentage>=90){
+
                 className="section-strong";
+
             }
+
+
             html+=`
+
                 <tr>
+
                     <td>
                         ${section.name}
                     </td>
+
                     <td class="${className}">
+
                         <b>
                             ${section.percentage.toFixed(1)}%
                         </b>
+
                     </td>
+
                 </tr>
+
             `;
+
         });
+
+
         html+=`
+
                 </tbody>
+
             </table>
+
+
             <div class="summary-grid">
+
                 <div class="summary-box">
+
                     <h4 class="bad">
                         🔴 أضعف 3 أقسام
                     </h4>
+
         `;
+
+
         weakest.forEach(section=>{
+
             html+=`
+
                 <div class="section-weak">
+
                     ${section.name}
                     —
                     ${section.percentage.toFixed(1)}%
+
                 </div>
+
             `;
+
         });
+
+
         html+=`
+
                 </div>
+
+
                 <div class="summary-box">
+
                     <h4 class="good">
                         🟢 أقوى 3 أقسام
                     </h4>
+
         `;
+
+
         strongest.forEach(section=>{
+
             html+=`
+
                 <div class="section-strong">
+
                     ${section.name}
                     —
                     ${section.percentage.toFixed(1)}%
+
                 </div>
+
             `;
+
         });
+
+
         html+=`
+
                 </div>
+
             </div>
+
         </div>
+
         `;
+
     });
-    /* =========================
-       أكثر نقاط الضعف
-    ========================= */
+
+
+    /* نقاط الضعف */
+
     const weaknessCounts=
         sections.map(section=>({
+
             name:section.name,
+
             count:0,
+
             total:0,
+
             sum:0
+
         }));
+
+
     results.forEach(branch=>{
+
         const percentages=
             weeklySectionPercentages(
                 branch.branch,
-                current[0],
-                current[1]
+                start,
+                end
             );
+
+
         percentages.forEach(
             (percentage,index)=>{
+
                 if(percentage===null){
                     return;
                 }
+
                 weaknessCounts[index].total++;
+
                 weaknessCounts[index].sum+=
                     percentage;
+
+
                 if(percentage<70){
+
                     weaknessCounts[index].count++;
+
                 }
+
             }
         );
+
     });
+
+
     const repeatedWeaknesses=
         weaknessCounts
         .filter(item=>
@@ -1377,181 +2306,550 @@ function weeklyReport(){
             (a,b)=>
                 b.count-a.count
         );
+
+
     html+=`
+
     <div class="general-box">
+
         <h3>
             🔴 أكثر نقاط الضعف تكراراً
         </h3>
+
     `;
+
+
     if(!repeatedWeaknesses.length){
+
         html+=`
+
             <p>
                 لا توجد أقسام أقل من 70% هذا الأسبوع.
             </p>
+
         `;
+
     }else{
+
         repeatedWeaknesses.forEach(item=>{
+
             html+=`
+
                 <div class="general-item">
+
                     <b>
                         ${item.name}
                     </b>
+
                     <span class="bad">
+
                         ضعيف في
                         ${item.count}
                         فرع
+
                     </span>
+
                 </div>
+
             `;
+
         });
+
     }
+
+
     html+=`
+
     </div>
+
     `;
-    /* =========================
-       متوسط الأقسام
-    ========================= */
+
+
+    /* متوسط الأقسام */
+
     const sectionOverall=
         sections.map(
             (section,index)=>{
+
                 let sum=0;
+
                 let count=0;
+
+
                 results.forEach(branch=>{
+
                     const percentages=
                         weeklySectionPercentages(
                             branch.branch,
-                            current[0],
-                            current[1]
+                            start,
+                            end
                         );
+
+
                     if(percentages[index]!==null){
+
                         sum+=
                             percentages[index];
+
                         count++;
+
                     }
+
                 });
+
+
                 return{
+
                     name:section.name,
+
                     average:
                         count
                         ?sum/count
                         :null
+
                 };
+
             }
         );
+
+
     html+=`
+
     <div class="general-box">
+
         <h3>
             📊 متوسط كل قسم بين الفروع
         </h3>
+
         <table class="section-detail-table">
+
             <thead>
+
                 <tr>
+
                     <th>
                         القسم
                     </th>
+
                     <th>
                         متوسط النسبة
                     </th>
+
                 </tr>
+
             </thead>
+
             <tbody>
+
     `;
+
+
     sectionOverall.forEach(item=>{
+
         html+=`
+
             <tr>
+
                 <td>
                     ${item.name}
                 </td>
+
                 <td>
+
                     ${
                         item.average===null
                         ?"—"
                         :item.average.toFixed(1)+"%"
                     }
+
                 </td>
+
             </tr>
+
         `;
+
     });
+
+
     html+=`
+
             </tbody>
+
         </table>
+
     </div>
+
     `;
+
+
+    return html;
+
+}
+
+
+/* =====================================================
+   التقرير الأسبوعي الحالي للإدارة
+===================================================== */
+
+function weeklyReport(){
+
+    const current=
+        getWeek(0);
+
     document.getElementById(
         "report"
-    ).innerHTML=html;
+    ).innerHTML=
+        buildReport(
+            current[0],
+            current[1]
+        );
+
 }
-/* =========================
+
+
+/* =====================================================
+   إنشاء قائمة كل الأسابيع
+===================================================== */
+
+function getAllWeeks(){
+
+    const weeks={};
+
+
+    allData.forEach(item=>{
+
+        const week=
+            getWeekFromDate(item.date);
+
+        const key=
+            week[0]+"|"+week[1];
+
+        weeks[key]={
+
+            start:week[0],
+
+            end:week[1]
+
+        };
+
+    });
+
+
+    return Object.values(weeks)
+        .sort(
+            (a,b)=>
+                b.start.localeCompare(a.start)
+        );
+
+}
+
+
+/* =====================================================
+   فتح وضع المشاهدة
+===================================================== */
+
+async function openViewer(){
+
+    document
+        .getElementById("loginPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("viewerPage")
+        .classList.remove("hidden");
+
+    document.getElementById(
+        "viewerReport"
+    ).innerHTML=`
+
+        <div class="loading">
+            جاري تحميل جميع التقارير...
+        </div>
+
+    `;
+
+
+    await loadData();
+
+    loadViewerWeeks();
+
+}
+
+
+/* =====================================================
+   تحميل قائمة التقارير
+===================================================== */
+
+function loadViewerWeeks(){
+
+    const select=
+        document.getElementById(
+            "viewerWeek"
+        );
+
+
+    const weeks=
+        getAllWeeks();
+
+
+    select.innerHTML="";
+
+
+    if(!weeks.length){
+
+        select.innerHTML=`
+
+            <option>
+                لا توجد تقارير محفوظة
+            </option>
+
+        `;
+
+
+        document.getElementById(
+            "viewerReport"
+        ).innerHTML=`
+
+            <div class="loading">
+
+                لا توجد تقارير أسبوعية محفوظة حتى الآن.
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    weeks.forEach((week,index)=>{
+
+        const option=
+            document.createElement(
+                "option"
+            );
+
+
+        option.value=
+            week.start+"|"+week.end;
+
+
+        option.textContent=
+            "الأسبوع: "+
+            week.start+
+            " إلى "+
+            week.end;
+
+
+        select.appendChild(option);
+
+    });
+
+
+    showViewerReport();
+
+}
+
+
+/* =====================================================
+   عرض التقرير المختار
+===================================================== */
+
+function showViewerReport(){
+
+    const value=
+        document.getElementById(
+            "viewerWeek"
+        ).value;
+
+
+    if(!value){
+        return;
+    }
+
+
+    const parts=
+        value.split("|");
+
+
+    const start=parts[0];
+
+    const end=parts[1];
+
+
+    document.getElementById(
+        "viewerReport"
+    ).innerHTML=
+        buildReport(
+            start,
+            end
+        );
+
+}
+
+
+/* =====================================================
+   PDF من وضع المشاهدة
+===================================================== */
+
+function printViewerPDF(){
+
+    window.print();
+
+}
+
+
+/* =====================================================
+   PDF الإدارة
+===================================================== */
+
+function downloadPDF(){
+
+    weeklyReport();
+
+    setTimeout(()=>{
+
+        window.print();
+
+    },500);
+
+}
+
+
+/* =====================================================
    حذف تقرير الأسبوع الحالي
-========================= */
-function deleteWeeklyReport(){
+===================================================== */
+
+async function deleteWeeklyReport(){
+
     const week=
         getWeek(0);
+
     const start=
         week[0];
+
     const end=
         week[1];
-    let data=
-        getData();
+
+
     const weeklyData=
-        data.filter(item=>
+        allData.filter(item=>
+
             item.date>=start &&
             item.date<=end
+
         );
+
+
     if(!weeklyData.length){
+
         alert(
             "لا توجد تقييمات لهذا الأسبوع لحذفها."
         );
+
         return;
     }
+
+
     const confirmed=
         confirm(
+
             "⚠️ تحذير\n\n"+
+
             "سيتم حذف جميع التقييمات المسجلة لهذا الأسبوع.\n\n"+
+
             "الفترة:\n"+
+
             start+
             " إلى "+
             end+
-            "\n\n"+
-            "هل أنت متأكد؟"
+
+            "\n\nهل أنت متأكد؟"
+
         );
+
+
     if(!confirmed){
         return;
     }
-    data=
-        data.filter(item=>
-            !(item.date>=start &&
-              item.date<=end)
+
+
+    const {error}=await supabaseClient
+        .from("branch_evaluations")
+        .delete()
+        .gte("evaluation_date",start)
+        .lte("evaluation_date",end);
+
+
+    if(error){
+
+        alert(
+            "حدث خطأ أثناء الحذف:\n\n"+
+            error.message
         );
-    saveData(data);
+
+        return;
+    }
+
+
+    await loadData();
+
+    showEvaluations();
+
+    weeklyReport();
+
+
     alert(
         "تم حذف تقييمات الأسبوع الحالي بنجاح ✅"
     );
-    showEvaluations();
-    weeklyReport();
+
 }
-/* =========================
-   PDF
-========================= */
-function downloadPDF(){
-    weeklyReport();
-    setTimeout(()=>{
-        window.print();
-    },500);
+
+
+/* =====================================================
+   الرجوع من المشاهدة
+===================================================== */
+
+function backToHomeFromViewer(){
+
+    document
+        .getElementById("viewerPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("loginPage")
+        .classList.remove("hidden");
+
 }
-/* =========================
-   زر Enter
-========================= */
+
+
+/* =====================================================
+   Enter
+===================================================== */
+
 document
     .getElementById("password")
     .addEventListener(
         "keydown",
         function(e){
+
             if(e.key==="Enter"){
+
                 login();
+
             }
+
         }
     );
+
+
+/* =====================================================
+   تشغيل
+===================================================== */
+
+initialize();
+
 </script>
+
 </body>
 </html>
