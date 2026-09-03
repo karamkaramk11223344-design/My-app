@@ -3,34 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>نظام تقييم الفروع</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
-*{box-sizing:border-box}
+*{
+box-sizing:border-box;
+}
+
 body{
 margin:0;
-font-family:Arial,sans-serif;
+font-family:Arial,Tahoma,sans-serif;
 background:#f2f3f5;
 color:#222;
 }
+
 .container{
 max-width:900px;
 margin:auto;
 padding:15px;
 }
+
 .card{
-background:white;
+background:#fff;
 padding:18px;
 margin:12px 0;
 border-radius:15px;
 box-shadow:0 2px 8px #ddd;
 }
-h1,h2{text-align:center}
+
+h1,h2{
+text-align:center;
+}
+
 label{
 display:block;
 font-weight:bold;
 margin-top:10px;
 }
+
 input,select,button{
 width:100%;
 padding:12px;
@@ -39,90 +50,216 @@ border-radius:8px;
 border:1px solid #ccc;
 font-size:16px;
 }
+
 button{
 background:#222;
-color:white;
+color:#fff;
 border:0;
 cursor:pointer;
 margin-top:15px;
 }
+
 .score{
 font-size:28px;
 font-weight:bold;
 text-align:center;
 margin-top:15px;
 }
+
 .row{
 background:#f7f7f7;
 padding:14px;
 margin:10px 0;
 border-radius:12px;
 }
+
 .good{
 color:green;
 font-weight:bold;
 }
+
 .bad{
 color:red;
 font-weight:bold;
 }
+
 .same{
 color:#777;
 font-weight:bold;
 }
-.strength{
-color:green;
-}
-.weakness{
-color:red;
-}
-.hidden{
-display:none;
-}
-.reportHeader{
-text-align:center;
-border-bottom:2px solid #222;
-padding-bottom:10px;
-margin-bottom:15px;
-}
+
 .delete{
 background:#b00020;
 }
-.details{
+
+.hidden{
+display:none;
+}
+
+
+/* جدول التقرير */
+
+.report-table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+direction:rtl;
+}
+
+.report-table th,
+.report-table td{
+border:1px solid #ccc;
+padding:10px 5px;
+text-align:center;
+}
+
+.report-table th{
+background:#222;
+color:white;
+}
+
+.report-table tr:nth-child(even){
+background:#f5f5f5;
+}
+
+.percent{
+font-weight:bold;
+font-size:18px;
+}
+
+
+/* شاشة الطباعة / PDF */
+
+@media print{
+
+@page{
+size:A4;
+margin:15mm;
+}
+
+body{
 background:white;
-padding:10px;
-border-radius:10px;
-margin-top:10px;
+font-family:Arial,Tahoma,sans-serif;
+}
+
+#loginPage{
+display:none !important;
+}
+
+#app > h1{
+display:none !important;
+}
+
+#app > .card:not(:has(#report)){
+display:none !important;
+}
+
+#app{
+display:block !important;
+max-width:100%;
+padding:0;
+}
+
+.card{
+box-shadow:none;
+margin:0;
+padding:0;
+}
+
+#report{
+display:block !important;
+direction:rtl;
+text-align:right;
+font-family:Arial,Tahoma,sans-serif;
+}
+
+.report-title{
+display:block !important;
+text-align:center;
+margin-bottom:20px;
+}
+
+.report-table{
+display:table !important;
+width:100%;
+border-collapse:collapse;
+direction:rtl;
+font-family:Arial,Tahoma,sans-serif;
+}
+
+.report-table th,
+.report-table td{
+border:1px solid #000;
+padding:8px;
+text-align:center;
+}
+
+.report-table th{
+background:#eee !important;
+color:#000 !important;
+}
+
+button{
+display:none !important;
+}
+
+select,
+input{
+display:none !important;
+}
+
 }
 </style>
 </head>
+
 <body>
+
 <!-- تسجيل الدخول -->
+
 <div id="loginPage" class="container">
+
 <div class="card">
+
 <h1>🔐 تسجيل الدخول</h1>
+
 <p style="text-align:center">
 نظام تقييم فروع المطعم
 </p>
+
 <input
 type="password"
 id="password"
 placeholder="أدخل رمز الدخول"
 >
+
 <button onclick="login()">
 دخول
 </button>
+
 <p id="loginError" class="bad"></p>
+
 </div>
+
 </div>
+
+
 <!-- التطبيق -->
+
 <div id="app" class="container hidden">
+
 <h1>📊 نظام تقييم فروع المطعم</h1>
-<!-- التقييم -->
+
+
+<!-- التقييم اليومي -->
+
 <div class="card">
+
 <h2>📝 التقييم اليومي</h2>
+
 <label>الفرع</label>
+
 <select id="branch">
+
 <option>بسماية</option>
 <option>غدير</option>
 <option>حي العامل</option>
@@ -136,40 +273,68 @@ placeholder="أدخل رمز الدخول"
 <option>غزالية</option>
 <option>مدائن</option>
 <option>حرية</option>
+
 </select>
+
+
 <label>تاريخ التقييم</label>
-<input type="date" id="date">
+
+<input
+type="date"
+id="date"
+>
+
+
 <label>المنطقة الأمامية — 10</label>
 <input type="number" id="front" min="0" max="10">
+
 <label>المطبخ — 20</label>
 <input type="number" id="kitchen" min="0" max="20">
+
 <label>السلامة العامة — 10</label>
 <input type="number" id="safety" min="0" max="10">
+
 <label>التشغيل — 15</label>
 <input type="number" id="operation" min="0" max="15">
+
 <label>الكاشير — 5</label>
 <input type="number" id="cashier" min="0" max="5">
+
 <label>المخزن — 10</label>
 <input type="number" id="store" min="0" max="10">
+
 <label>الأمور الممنوعة — 10</label>
 <input type="number" id="forbidden" min="0" max="10">
+
 <label>سكن العمال — 10</label>
 <input type="number" id="housing" min="0" max="10">
+
 <label>سرعة الاستجابة — 10</label>
 <input type="number" id="response" min="0" max="10">
+
+
 <button onclick="saveEvaluation()">
-💾 حفظ التقييم
+💾 حفظ التقييم اليومي
 </button>
+
+
 <div id="score" class="score">
 المجموع: 0 / 100
 </div>
+
 </div>
-<!-- مشاهدة التقييمات -->
+
+
+<!-- مشاهدة التقييمات اليومية -->
+
 <div class="card">
-<h2>📋 مشاهدة التقييمات</h2>
-<label>اختيار الفرع</label>
+
+<h2>📋 التقييمات اليومية</h2>
+
 <select id="viewBranch" onchange="showEvaluations()">
+
 <option value="all">كل الفروع</option>
+
 <option>بسماية</option>
 <option>غدير</option>
 <option>حي العامل</option>
@@ -183,30 +348,58 @@ placeholder="أدخل رمز الدخول"
 <option>غزالية</option>
 <option>مدائن</option>
 <option>حرية</option>
+
 </select>
+
 <div id="evaluationsList"></div>
+
 </div>
+
+
 <!-- التقرير الأسبوعي -->
+
 <div class="card">
-<h2>📅 التقرير الأسبوعي</h2>
+
+<h2>📊 التقرير الأسبوعي</h2>
+
 <button onclick="weeklyReport()">
-📊 إنشاء التقرير
+عرض التقرير
 </button>
+
 <button onclick="downloadPDF()">
-📄 حفظ التقرير PDF
+📄 حفظ التقرير PDF بالعربي
 </button>
+
 <div id="report"></div>
+
 </div>
-<!-- تسجيل الخروج -->
+
+
+<!-- خروج -->
+
 <div class="card">
+
 <button onclick="logout()">
 🔒 تسجيل الخروج
 </button>
+
 </div>
+
 </div>
+
+
 <script>
+
+
+/* رمز الدخول */
+
 const LOGIN_PASSWORD="cindrell@123";
+
+
+/* الفروع */
+
 const branches=[
+
 "بسماية",
 "غدير",
 "حي العامل",
@@ -220,400 +413,765 @@ const branches=[
 "غزالية",
 "مدائن",
 "حرية"
+
 ];
+
+
+/* الأقسام */
+
 const sections=[
-{id:"front",name:"المنطقة الأمامية",max:10},
-{id:"kitchen",name:"المطبخ",max:20},
-{id:"safety",name:"السلامة العامة",max:10},
-{id:"operation",name:"التشغيل",max:15},
-{id:"cashier",name:"الكاشير",max:5},
-{id:"store",name:"المخزن",max:10},
-{id:"forbidden",name:"الأمور الممنوعة",max:10},
-{id:"housing",name:"سكن العمال",max:10},
-{id:"response",name:"سرعة الاستجابة",max:10}
+
+{
+id:"front",
+name:"المنطقة الأمامية",
+max:10
+},
+
+{
+id:"kitchen",
+name:"المطبخ",
+max:20
+},
+
+{
+id:"safety",
+name:"السلامة العامة",
+max:10
+},
+
+{
+id:"operation",
+name:"التشغيل",
+max:15
+},
+
+{
+id:"cashier",
+name:"الكاشير",
+max:5
+},
+
+{
+id:"store",
+name:"المخزن",
+max:10
+},
+
+{
+id:"forbidden",
+name:"الأمور الممنوعة",
+max:10
+},
+
+{
+id:"housing",
+name:"سكن العمال",
+max:10
+},
+
+{
+id:"response",
+name:"سرعة الاستجابة",
+max:10
+}
+
 ];
+
+
+/* تسجيل الدخول */
+
 function login(){
-let password=document.getElementById("password").value;
+
+const password=
+document.getElementById("password").value;
+
 if(password===LOGIN_PASSWORD){
-sessionStorage.setItem("loggedIn","yes");
-document.getElementById("loginPage").classList.add("hidden");
-document.getElementById("app").classList.remove("hidden");
+
+sessionStorage.setItem(
+"loggedIn",
+"yes"
+);
+
+document
+.getElementById("loginPage")
+.classList.add("hidden");
+
+document
+.getElementById("app")
+.classList.remove("hidden");
+
 showEvaluations();
+
 }else{
-document.getElementById("loginError").innerText=
+
+document
+.getElementById("loginError")
+.innerText=
 "رمز الدخول غير صحيح ❌";
+
 }
+
 }
+
+
+/* تسجيل الخروج */
+
 function logout(){
+
 sessionStorage.removeItem("loggedIn");
+
 location.reload();
+
 }
-if(sessionStorage.getItem("loggedIn")==="yes"){
-document.getElementById("loginPage").classList.add("hidden");
-document.getElementById("app").classList.remove("hidden");
+
+
+/* فتح التطبيق إذا مسجل */
+
+if(
+sessionStorage.getItem("loggedIn")==="yes"
+){
+
+document
+.getElementById("loginPage")
+.classList.add("hidden");
+
+document
+.getElementById("app")
+.classList.remove("hidden");
+
 }
+
+
+/* تاريخ اليوم */
+
 document.getElementById("date").value=
 new Date().toISOString().split("T")[0];
+
+
+/* جلب البيانات */
+
 function getData(){
+
 return JSON.parse(
-localStorage.getItem("branchEvaluations")||"[]"
+localStorage.getItem(
+"branchEvaluations"
+)||"[]"
 );
+
 }
+
+
+/* حفظ البيانات */
+
 function saveData(data){
+
 localStorage.setItem(
 "branchEvaluations",
 JSON.stringify(data)
 );
+
 }
+
+
+/* حفظ التقييم اليومي */
+
 function saveEvaluation(){
-let branch=document.getElementById("branch").value;
-let date=document.getElementById("date").value;
+
+const branch=
+document.getElementById("branch").value;
+
+const date=
+document.getElementById("date").value;
+
+
 if(!date){
+
 alert("يرجى اختيار تاريخ التقييم");
+
 return;
+
 }
+
+
 let scores={};
+
 let total=0;
-for(let section of sections){
-let value=Number(
-document.getElementById(section.id).value||0
+
+
+for(const section of sections){
+
+const value=Number(
+document.getElementById(section.id).value || 0
 );
-if(value<0 || value>section.max){
+
+
+if(
+value<0 ||
+value>section.max
+){
+
 alert(
 section.name+
 " يجب أن يكون بين 0 و "+
 section.max
 );
+
 return;
+
 }
+
+
 scores[section.id]=value;
+
 total+=value;
+
 }
+
+
 let data=getData();
-/* حذف تقييم سابق لنفس الفرع ونفس التاريخ */
+
+
+/*
+تقييم واحد للفرع في اليوم.
+إذا عدلت التقييم بنفس اليوم
+يتم استبدال القديم.
+*/
+
 data=data.filter(item=>!(
 item.branch===branch &&
 item.date===date
 ));
+
+
 data.push({
+
 branch:branch,
+
 date:date,
+
 score:total,
+
 scores:scores
+
 });
+
+
 saveData(data);
+
+
 document.getElementById("score").innerText=
-"المجموع: "+total+" / 100";
-alert("تم حفظ التقييم بنجاح ✅");
+"المجموع: "+
+total+
+" / 100";
+
+
+alert("تم حفظ التقييم اليومي ✅");
+
+
 showEvaluations();
+
 }
+
+
 /* مشاهدة التقييمات */
+
 function showEvaluations(){
-let selected=
+
+const selected=
 document.getElementById("viewBranch").value;
+
 let data=getData();
+
+
 if(selected!=="all"){
+
 data=data.filter(
 item=>item.branch===selected
 );
+
 }
+
+
 data.sort(
 (a,b)=>b.date.localeCompare(a.date)
 );
+
+
 let html="";
+
+
 if(!data.length){
-html="<p style='text-align:center'>لا توجد تقييمات محفوظة.</p>";
-document.getElementById("evaluationsList").innerHTML=html;
+
+document.getElementById(
+"evaluationsList"
+).innerHTML=
+"<p style='text-align:center'>لا توجد تقييمات.</p>";
+
 return;
+
 }
-data.forEach((item,index)=>{
+
+
+data.forEach(item=>{
+
 html+=`
+
 <div class="row">
+
 <h3>🏪 ${item.branch}</h3>
-<b>📅 التاريخ:</b>
+
+<b>التاريخ:</b>
 ${item.date}
+
 <br><br>
-<b>⭐ المجموع:</b>
-<span class="${item.score>=80?'good':item.score<60?'bad':'same'}">
-${item.score} / 100
+
+<b>النتيجة:</b>
+
+<span class="percent ${
+item.score>=80
+?"good"
+:item.score<60
+?"bad"
+:"same"
+}">
+
+${item.score}%
+
 </span>
-<div class="details">
-<b>تفاصيل التقييم:</b>
+
 <br><br>
+
+<details>
+
+<summary>
+مشاهدة تفاصيل التقييم
+</summary>
+
+<br>
+
 ${sections.map(section=>`
+
 <div>
+
 ${section.name}:
 <b>
-${item.scores[section.id] || 0}
-/
-${section.max}
+${item.scores[section.id] || 0}/${section.max}
 </b>
+
 </div>
+
 `).join("")}
-</div>
-<button class="delete"
+
+</details>
+
+<button
+class="delete"
 onclick="deleteEvaluation('${item.branch}','${item.date}')">
-🗑️ حذف هذا التقييم
+
+🗑️ حذف
+
 </button>
+
 </div>
+
 `;
+
 });
-document.getElementById("evaluationsList").innerHTML=html;
+
+
+document.getElementById(
+"evaluationsList"
+).innerHTML=html;
+
 }
-/* حذف تقييم */
-function deleteEvaluation(branch,date){
+
+
+/* حذف التقييم */
+
+function deleteEvaluation(
+branch,
+date
+){
+
 if(!confirm(
-"هل أنت متأكد من حذف هذا التقييم؟"
+"هل تريد حذف هذا التقييم؟"
 )){
+
 return;
+
 }
+
+
 let data=getData();
+
+
 data=data.filter(item=>!(
 item.branch===branch &&
 item.date===date
 ));
+
+
 saveData(data);
+
 showEvaluations();
-alert("تم حذف التقييم ✅");
+
 }
-/* الأسبوع */
-function getWeek(offset){
-let now=new Date();
+
+
+/* حساب بداية ونهاية الأسبوع */
+
+function getWeek(offset=0){
+
+const now=new Date();
+
 let day=now.getDay();
-if(day===0)day=7;
-let monday=new Date(now);
+
+if(day===0){
+
+day=7;
+
+}
+
+
+const monday=new Date(now);
+
+monday.setHours(0,0,0,0);
+
 monday.setDate(
-now.getDate()-day+1+(offset*7)
+now.getDate()-
+day+
+1+
+(offset*7)
 );
-let sunday=new Date(monday);
+
+
+const sunday=new Date(monday);
+
 sunday.setDate(
 monday.getDate()+6
 );
-function format(d){
-return d.getFullYear()+
+
+sunday.setHours(23,59,59,999);
+
+
+function format(date){
+
+return date.getFullYear()+
 "-"+
-String(d.getMonth()+1).padStart(2,"0")+
+String(
+date.getMonth()+1
+).padStart(2,"0")+
 "-"+
-String(d.getDate()).padStart(2,"0");
+String(
+date.getDate()
+).padStart(2,"0");
+
 }
+
+
 return[
 format(monday),
 format(sunday)
 ];
+
 }
-function average(branch,start,end){
-let data=getData();
-let list=data.filter(item=>
+
+
+/* متوسط تقييم الفرع للأسبوع */
+
+function weeklyAverage(
+branch,
+start,
+end
+){
+
+const data=getData();
+
+
+const list=data.filter(item=>
+
 item.branch===branch &&
 item.date>=start &&
 item.date<=end
+
 );
-if(!list.length)return null;
-return list.reduce(
-(sum,item)=>sum+item.score,
-0
-)/list.length;
+
+
+if(!list.length){
+
+return null;
+
 }
-function sectionAverage(branch,start,end,sectionId){
-let data=getData();
-let list=data.filter(item=>
-item.branch===branch &&
-item.date>=start &&
-item.date<=end
+
+
+const total=list.reduce(
+(sum,item)=>sum+Number(item.score),
+0
 );
-if(!list.length)return null;
-return list.reduce(
-(sum,item)=>
-sum+
-Number(item.scores?.[sectionId]||0),
-0
-)/list.length;
+
+
+return total/list.length;
+
 }
-/* التقرير */
+
+
+/* التقرير الأسبوعي */
+
 function weeklyReport(){
-let current=getWeek(0);
-let previous=getWeek(-1);
+
+const current=
+getWeek(0);
+
+const previous=
+getWeek(-1);
+
+
 let results=[];
+
+
 branches.forEach(branch=>{
-let currentAvg=
-average(
+
+const currentAverage=
+weeklyAverage(
 branch,
 current[0],
 current[1]
 );
-let previousAvg=
-average(
+
+
+const previousAverage=
+weeklyAverage(
 branch,
 previous[0],
 previous[1]
 );
-if(currentAvg!==null){
-results.push({
-branch:branch,
-current:currentAvg,
-previous:previousAvg,
-change:
-previousAvg===null
-?null
-:currentAvg-previousAvg
-});
+
+
+if(currentAverage!==null){
+
+let change=null;
+
+
+if(previousAverage!==null){
+
+change=
+currentAverage-
+previousAverage;
+
 }
+
+
+results.push({
+
+branch:branch,
+
+current:currentAverage,
+
+previous:previousAverage,
+
+change:change
+
 });
+
+}
+
+});
+
+
+/*
+ترتيب الأعلى إلى الأقل
+*/
+
 results.sort(
 (a,b)=>b.current-a.current
 );
-let today=
-new Date().toLocaleDateString("ar-IQ");
-let html=
-'<div class="reportHeader">'+
-"<h2>📊 التقرير الأسبوعي</h2>"+
-"<p><b>تاريخ التقرير:</b> "+
-today+
-"</p>"+
-"<p><b>الأسبوع الحالي:</b> "+
-current[0]+
-" إلى "+
-current[1]+
-"</p>"+
-"<p><b>الأسبوع السابق:</b> "+
-previous[0]+
-" إلى "+
-previous[1]+
-"</p>"+
-"</div>";
+
+
+let html=`
+
+
+<div class="report-title">
+
+<h2>📊 التقرير الأسبوعي</h2>
+
+<p>
+تاريخ التقرير:
+${new Date().toLocaleDateString("ar-IQ")}
+</p>
+
+<p>
+الأسبوع الحالي:
+${current[0]} إلى ${current[1]}
+</p>
+
+</div>
+
+
+<table class="report-table">
+
+<thead>
+
+<tr>
+
+<th>الترتيب</th>
+
+<th>الفرع</th>
+
+<th>هذا الأسبوع</th>
+
+<th>الأسبوع السابق</th>
+
+<th>التغيير</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+`;
+
+
 if(!results.length){
-html+="<p>لا توجد تقييمات محفوظة لهذا الأسبوع.</p>";
-document.getElementById("report").innerHTML=html;
-return;
-}
-results.forEach((item,index)=>{
-let status="";
-let className="same";
-let percent="";
-if(item.change===null){
-status="جديد";
+
+html+=`
+
+<tr>
+
+<td colspan="5">
+لا توجد تقييمات لهذا الأسبوع
+</td>
+
+</tr>
+
+`;
+
 }else{
-let p=
+
+
+results.forEach(
+(item,index)=>{
+
+let changeText="—";
+
+let changeClass="same";
+
+
+if(item.change!==null){
+
+const percentageChange=
 item.previous===0
 ?0
 :(item.change/item.previous)*100;
-percent=
-" ("+
-(p>0?"+":"")+
-p.toFixed(1)+
-"%)";
-if(item.change>0){
-status="⬆️ متحسن";
-className="good";
-}else if(item.change<0){
-status="⬇️ متراجع";
-className="bad";
+
+
+if(percentageChange>0){
+
+changeText=
+"+"+
+percentageChange.toFixed(1)+
+"%";
+
+changeClass="good";
+
+}else if(percentageChange<0){
+
+changeText=
+percentageChange.toFixed(1)+
+"%";
+
+changeClass="bad";
+
 }else{
-status="➖ ثابت";
+
+changeText="0%";
+
 }
+
 }
-let strengths=[];
-let weaknesses=[];
-sections.forEach(section=>{
-let avg=
-sectionAverage(
-item.branch,
-current[0],
-current[1],
-section.id
-);
-if(avg===null)return;
-let percentage=
-(avg/section.max)*100;
-if(percentage>=80){
-strengths.push(
-section.name+
-" "+
-avg.toFixed(1)+
-"/"+
-section.max
-);
-}
-if(percentage<60){
-weaknesses.push(
-section.name+
-" "+
-avg.toFixed(1)+
-"/"+
-section.max
-);
-}
-});
-html+=
-'<div class="row">'+
-"<h3>"+
-(index+1)+
-". "+
-item.branch+
-"</h3>"+
-"<b>تقييم الأسبوع الحالي:</b> "+
-item.current.toFixed(1)+
-" / 100<br>"+
-"<b>الأسبوع السابق:</b> "+
-(
+
+
+html+=`
+
+<tr>
+
+<td>
+${index+1}
+</td>
+
+<td>
+<b>${item.branch}</b>
+</td>
+
+<td>
+<b>
+${item.current.toFixed(1)}%
+</b>
+</td>
+
+<td>
+
+${
 item.previous===null
-?"لا يوجد"
-:item.previous.toFixed(1)+
-" / 100"
-)+
-"<br><br>"+
-'<span class="'+
-className+
-'">'+
-status+
-percent+
-"</span>"+
-"<br><br>"+
-'<b class="strength">💪 نقاط القوة:</b><br>'+
-(
-strengths.length
-?strengths.join("<br>")
-:"لا توجد نقاط قوة مميزة"
-)+
-"<br><br>"+
-'<b class="weakness">⚠️ نقاط الضعف:</b><br>'+
-(
-weaknesses.length
-?weaknesses.join("<br>")
-:"لا توجد نقاط ضعف كبيرة"
-)+
-"</div>";
+?"—"
+:item.previous.toFixed(1)+"%"
+}
+
+</td>
+
+<td class="${changeClass}">
+
+<b>
+${changeText}
+</b>
+
+</td>
+
+</tr>
+
+`;
+
 });
-document.getElementById("report").innerHTML=html;
+
 }
-/* PDF */
+
+
+html+=`
+
+</tbody>
+
+</table>
+
+`;
+
+
+document.getElementById(
+"report"
+).innerHTML=html;
+
+}
+
+
+/* حفظ PDF عربي */
+
 function downloadPDF(){
+
+/*
+ننشئ التقرير أولاً
+*/
+
 weeklyReport();
+
+
 setTimeout(()=>{
-const {jsPDF}=window.jspdf;
-const pdf=new jsPDF();
-let report=
-document.getElementById("report").innerText;
-pdf.setFontSize(10);
-let lines=
-pdf.splitTextToSize(
-report,
-180
-);
-pdf.text(
-lines,
-10,
-15
-);
-let today=
-new Date()
-.toISOString()
-.split("T")[0];
-pdf.save(
-"تقرير-الفروع-"+today+".pdf"
-);
-},300);
+
+window.print();
+
+},500);
+
 }
+
 </script>
+
 </body>
 </html>
