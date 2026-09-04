@@ -1516,12 +1516,17 @@ function buildReport(
                 end
             );
 
-        const previousAverage=
-            weeklyAverage(
-                branch,
-                previousWeek[0],
-                previousWeek[1]
-            );
+      const previousAverage =
+    allData.some(item =>
+        item.date >= previousWeek[0] &&
+        item.date <= previousWeek[1]
+    )
+    ? weeklyAverage(
+        branch,
+        previousWeek[0],
+        previousWeek[1]
+    )
+    : null;
 
         if(currentAverage!==null){
 
