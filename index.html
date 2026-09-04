@@ -1504,7 +1504,11 @@ function buildReport(
             .toISOString()
             .split("T")[0]
         );
-
+const hasPreviousData =
+    allData.some(item =>
+        item.date >= previousWeek[0] &&
+        item.date <= previousWeek[1]
+    );
     let results=[];
 
     branches.forEach(branch=>{
@@ -1516,11 +1520,8 @@ function buildReport(
                 end
             );
 
-      const previousAverage =
-    allData.some(item =>
-        item.date >= previousWeek[0] &&
-        item.date <= previousWeek[1]
-    )
+     const previousAverage =
+    hasPreviousData
     ? weeklyAverage(
         branch,
         previousWeek[0],
