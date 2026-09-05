@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>نظام تقييم فروع سندرلا</title>
 
-<!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -102,8 +101,6 @@ button:hover{opacity:.9}
     background:#555;
 }
 
-/* التقرير */
-
 .report-title{
     text-align:center;
     margin-bottom:20px;
@@ -147,8 +144,6 @@ button:hover{opacity:.9}
     font-weight:bold;
 }
 
-/* الحالات */
-
 .status{
     display:inline-block;
     padding:5px 9px;
@@ -187,8 +182,6 @@ button:hover{opacity:.9}
     color:#41464b;
 }
 
-/* الحركة */
-
 .movement-grid{
     display:grid;
     grid-template-columns:1fr 1fr 1fr;
@@ -215,8 +208,6 @@ button:hover{opacity:.9}
 .movement-item:last-child{
     border-bottom:0;
 }
-
-/* التفاصيل */
 
 .branch-detail{
     border:1px solid #ccc;
@@ -302,8 +293,6 @@ button:hover{opacity:.9}
     border-bottom:0;
 }
 
-/* اختيار التقرير */
-
 .report-selector{
     background:#f7f7f7;
     padding:15px;
@@ -315,15 +304,11 @@ button:hover{opacity:.9}
     margin-top:0;
 }
 
-/* رسالة التحميل */
-
 .loading{
     text-align:center;
     padding:20px;
     font-weight:bold;
 }
-
-/* موبايل */
 
 @media(max-width:800px){
 
@@ -339,8 +324,6 @@ button:hover{opacity:.9}
         font-size:11px;
     }
 }
-
-/* الطباعة */
 
 @media print{
 
@@ -443,10 +426,6 @@ button:hover{opacity:.9}
 
 <body>
 
-<!-- =====================================================
-     الصفحة الرئيسية
-===================================================== -->
-
 <div id="loginPage" class="container">
 
     <div class="card">
@@ -496,10 +475,6 @@ button:hover{opacity:.9}
     </div>
 
 </div>
-
-<!-- =====================================================
-     وضع مشاهدة التقارير
-===================================================== -->
 
 <div id="viewerPage" class="container hidden">
 
@@ -552,17 +527,9 @@ button:hover{opacity:.9}
 
 </div>
 
-<!-- =====================================================
-     التطبيق الإداري
-===================================================== -->
-
 <div id="app" class="container hidden">
 
 <h1>📊 نظام تقييم فروع سندرلا</h1>
-
-<!-- =====================================================
-     التقييم اليومي
-===================================================== -->
 
 <div class="card">
 
@@ -632,10 +599,6 @@ button:hover{opacity:.9}
 
 </div>
 
-<!-- =====================================================
-     التقييمات اليومية
-===================================================== -->
-
 <div class="card">
 
 <h2>📋 التقييمات اليومية</h2>
@@ -666,10 +629,6 @@ button:hover{opacity:.9}
 
 </div>
 
-<!-- =====================================================
-     التقرير الإداري
-===================================================== -->
-
 <div class="card">
 
 <h2>📊 التقرير الأسبوعي</h2>
@@ -693,10 +652,6 @@ button:hover{opacity:.9}
 
 </div>
 
-<!-- =====================================================
-     خروج
-===================================================== -->
-
 <div class="card">
 
 <button onclick="logout()">
@@ -708,10 +663,6 @@ button:hover{opacity:.9}
 </div>
 
 <script>
-
-/* =====================================================
-   إعداد Supabase
-===================================================== */
 
 const SUPABASE_URL =
 "https://ttmmbrunqzckmpgywnrx.supabase.co";
@@ -725,15 +676,7 @@ window.supabase.createClient(
     SUPABASE_KEY
 );
 
-/* =====================================================
-   رمز الدخول
-===================================================== */
-
 const LOGIN_PASSWORD="cindrell@123";
-
-/* =====================================================
-   الفروع
-===================================================== */
 
 const branches=[
 "بسماية",
@@ -750,10 +693,6 @@ const branches=[
 "مدائن",
 "حرية"
 ];
-
-/* =====================================================
-   الأقسام
-===================================================== */
 
 const sections=[
 {
@@ -803,15 +742,7 @@ const sections=[
 }
 ];
 
-/* =====================================================
-   البيانات العامة
-===================================================== */
-
 let allData=[];
-
-/* =====================================================
-   تحميل البيانات من Supabase
-===================================================== */
 
 async function loadData(){
 
@@ -848,10 +779,6 @@ async function loadData(){
     return allData;
 }
 
-/* =====================================================
-   فتح تسجيل الإدارة
-===================================================== */
-
 function showAdminLogin(){
 
     document
@@ -859,10 +786,6 @@ function showAdminLogin(){
         .classList.remove("hidden");
 
 }
-
-/* =====================================================
-   الرجوع
-===================================================== */
 
 function backHome(){
 
@@ -873,10 +796,6 @@ function backHome(){
     document.getElementById("password").value="";
 
 }
-
-/* =====================================================
-   تسجيل الدخول
-===================================================== */
 
 async function login(){
 
@@ -913,10 +832,6 @@ async function login(){
     weeklyReport();
 }
 
-/* =====================================================
-   تسجيل الخروج
-===================================================== */
-
 function logout(){
 
     sessionStorage.removeItem(
@@ -926,10 +841,6 @@ function logout(){
     location.reload();
 
 }
-
-/* =====================================================
-   فتح التطبيق إذا كان مسجل دخول
-===================================================== */
 
 async function initialize(){
 
@@ -959,10 +870,6 @@ async function initialize(){
     }
 
 }
-
-/* =====================================================
-   حفظ التقييم
-===================================================== */
 
 async function saveEvaluation(){
 
@@ -1081,10 +988,6 @@ async function saveEvaluation(){
 
 }
 
-/* =====================================================
-   عرض التقييمات اليومية
-===================================================== */
-
 function showEvaluations(){
 
     const selected=
@@ -1195,10 +1098,6 @@ function showEvaluations(){
 
 }
 
-/* =====================================================
-   حذف تقييم يومي
-===================================================== */
-
 async function deleteEvaluation(
     branch,
     date
@@ -1234,10 +1133,6 @@ async function deleteEvaluation(
     weeklyReport();
 
 }
-
-/* =====================================================
-   الأسبوع
-===================================================== */
 
 function getWeek(offset=0){
 
@@ -1287,10 +1182,6 @@ function getWeek(offset=0){
 
 }
 
-/* =====================================================
-   حساب أسبوع من تاريخ محدد
-===================================================== */
-
 function getWeekFromDate(dateString){
 
     const d=new Date(
@@ -1332,10 +1223,6 @@ function getWeekFromDate(dateString){
 
 }
 
-/* =====================================================
-   متوسط الفرع
-===================================================== */
-
 function weeklyAverage(
     branch,
     start,
@@ -1366,10 +1253,6 @@ function weeklyAverage(
     return total/list.length;
 
 }
-
-/* =====================================================
-   نسبة الأقسام
-===================================================== */
 
 function weeklySectionPercentages(
     branch,
@@ -1426,10 +1309,6 @@ function weeklySectionPercentages(
     });
 
 }
-
-/* =====================================================
-   الحالة
-===================================================== */
 
 function getStatus(score){
 
@@ -1504,11 +1383,26 @@ function buildReport(
             .toISOString()
             .split("T")[0]
         );
-const hasPreviousData =
-    allData.some(item =>
-        item.date >= previousWeek[0] &&
-        item.date <= previousWeek[1]
-    );
+
+    /*
+       التعديل:
+       التقرير الحالي لا يقارن بالأسبوع السابق.
+       الأسبوع القادم سيقارن تلقائياً بالأسبوع الحالي.
+    */
+
+    const currentWeek=
+        getWeek(0);
+
+    const isCurrentWeek=
+        start===currentWeek[0] &&
+        end===currentWeek[1];
+
+    const hasPreviousData =
+        allData.some(item =>
+            item.date >= previousWeek[0] &&
+            item.date <= previousWeek[1]
+        );
+
     let results=[];
 
     branches.forEach(branch=>{
@@ -1520,14 +1414,14 @@ const hasPreviousData =
                 end
             );
 
-     const previousAverage =
-    hasPreviousData
-    ? weeklyAverage(
-        branch,
-        previousWeek[0],
-        previousWeek[1]
-    )
-    : null;
+        const previousAverage =
+            !isCurrentWeek && hasPreviousData
+            ? weeklyAverage(
+                branch,
+                previousWeek[0],
+                previousWeek[1]
+            )
+            : null;
 
         if(currentAverage!==null){
 
@@ -2150,8 +2044,6 @@ const hasPreviousData =
 
     });
 
-    /* نقاط الضعف */
-
     const weaknessCounts=
         sections.map(section=>({
 
@@ -2260,8 +2152,6 @@ const hasPreviousData =
     </div>
 
     `;
-
-    /* متوسط الأقسام */
 
     const sectionOverall=
         sections.map(
@@ -2375,10 +2265,6 @@ const hasPreviousData =
 
 }
 
-/* =====================================================
-   التقرير الأسبوعي الحالي للإدارة
-===================================================== */
-
 function weeklyReport(){
 
     const current=
@@ -2393,10 +2279,6 @@ function weeklyReport(){
         );
 
 }
-
-/* =====================================================
-   إنشاء قائمة كل الأسابيع
-===================================================== */
 
 function getAllWeeks(){
 
@@ -2428,10 +2310,6 @@ function getAllWeeks(){
 
 }
 
-/* =====================================================
-   فتح وضع المشاهدة
-===================================================== */
-
 async function openViewer(){
 
     document
@@ -2457,10 +2335,6 @@ async function openViewer(){
     loadViewerWeeks();
 
 }
-
-/* =====================================================
-   تحميل قائمة التقارير
-===================================================== */
 
 function loadViewerWeeks(){
 
@@ -2523,10 +2397,6 @@ function loadViewerWeeks(){
 
 }
 
-/* =====================================================
-   عرض التقرير المختار
-===================================================== */
-
 function showViewerReport(){
 
     const value=
@@ -2555,19 +2425,11 @@ function showViewerReport(){
 
 }
 
-/* =====================================================
-   PDF من وضع المشاهدة
-===================================================== */
-
 function printViewerPDF(){
 
     window.print();
 
 }
-
-/* =====================================================
-   PDF الإدارة
-===================================================== */
 
 function downloadPDF(){
 
@@ -2580,10 +2442,6 @@ function downloadPDF(){
     },500);
 
 }
-
-/* =====================================================
-   حذف تقرير الأسبوع الحالي
-===================================================== */
 
 async function deleteWeeklyReport(){
 
@@ -2662,10 +2520,6 @@ async function deleteWeeklyReport(){
 
 }
 
-/* =====================================================
-   الرجوع من المشاهدة
-===================================================== */
-
 function backToHomeFromViewer(){
 
     document
@@ -2677,10 +2531,6 @@ function backToHomeFromViewer(){
         .classList.remove("hidden");
 
 }
-
-/* =====================================================
-   Enter
-===================================================== */
 
 document
     .getElementById("password")
@@ -2696,10 +2546,6 @@ document
 
         }
     );
-
-/* =====================================================
-   تشغيل
-===================================================== */
 
 initialize();
 
