@@ -2,32 +2,29 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مركز قيادة فروع سندرلا</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  font-family:Tahoma,Arial,sans-serif;
-}
-
+*{box-sizing:border-box}
 body{
   margin:0;
+  font-family:Tahoma,Arial,sans-serif;
   background:#f4f6f8;
-  color:#1f2937;
+  color:#222;
 }
-
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
 header{
   background:#111827;
   color:white;
-  padding:18px;
+  padding:15px 20px;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:1000;
+  box-shadow:0 2px 8px #0002;
 }
-
-.header-content{
+.header-inner{
   max-width:1400px;
   margin:auto;
   display:flex;
@@ -35,1282 +32,2688 @@ header{
   align-items:center;
   gap:15px;
 }
-
-.logo{
-  font-size:22px;
-  font-weight:bold;
-}
-
+.logo{font-size:21px;font-weight:bold}
+.user-info{font-size:13px;opacity:.9}
 .container{
   max-width:1400px;
   margin:auto;
   padding:20px;
 }
-
-.menu{
+nav{
   display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-bottom:20px;
+  gap:7px;
+  overflow-x:auto;
+  padding:10px 0;
+  margin-bottom:15px;
 }
-
-.menu button{
+nav button{
   border:0;
-  padding:11px 15px;
-  border-radius:10px;
-  cursor:pointer;
   background:white;
-  color:#374151;
-  box-shadow:0 2px 8px #00000010;
+  padding:10px 14px;
+  border-radius:10px;
+  white-space:nowrap;
+  box-shadow:0 1px 4px #0001;
 }
-
-.menu button.active{
+nav button.active{
   background:#111827;
   color:white;
 }
-
-.page{
-  display:none;
-}
-
-.page.active{
-  display:block;
-}
-
-h1,h2,h3{
-  margin-top:0;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:15px;
-  margin-bottom:20px;
-}
-
+.page{display:none}
+.page.active{display:block}
+h2{margin-top:5px}
 .card{
   background:white;
-  border-radius:15px;
+  border-radius:14px;
   padding:18px;
-  box-shadow:0 3px 12px #00000010;
+  margin-bottom:15px;
+  box-shadow:0 2px 8px #00000010;
 }
-
-.card .number{
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:14px;
+}
+.stat{
+  padding:18px;
+  border-radius:14px;
+  background:white;
+  box-shadow:0 2px 8px #0001;
+}
+.stat .number{
   font-size:30px;
   font-weight:bold;
   margin-top:8px;
 }
-
-.green{color:#16a34a}
-.yellow{color:#ca8a04}
-.orange{color:#ea580c}
+.green{color:#15803d}
+.yellow{color:#a16207}
+.orange{color:#c2410c}
 .red{color:#dc2626}
-
-.status{
-  display:inline-block;
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:13px;
+.branch-card{
+  background:white;
+  border-radius:14px;
+  padding:16px;
+  box-shadow:0 2px 8px #0001;
+  border-right:5px solid #64748b;
+}
+.branch-title{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+}
+.score{
+  font-size:32px;
   font-weight:bold;
 }
-
-.status.green{
-  background:#dcfce7;
-  color:#166534;
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
 }
-
-.status.yellow{
-  background:#fef9c3;
-  color:#854d0e;
-}
-
-.status.orange{
-  background:#ffedd5;
-  color:#9a3412;
-}
-
-.status.red{
-  background:#fee2e2;
-  color:#991b1b;
-}
-
-.branches{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:15px;
-}
-
-.branch{
-  background:white;
-  border-radius:15px;
-  padding:18px;
-  box-shadow:0 3px 12px #00000010;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.branch:hover{
-  transform:translateY(-3px);
-}
-
+.badge.green{background:#dcfce7}
+.badge.yellow{background:#fef9c3}
+.badge.orange{background:#ffedd5}
+.badge.red{background:#fee2e2}
 .progress{
-  width:100%;
   height:10px;
   background:#e5e7eb;
-  border-radius:10px;
+  border-radius:20px;
   overflow:hidden;
-  margin:12px 0;
+  margin:10px 0;
 }
-
 .progress div{
   height:100%;
-  background:#16a34a;
+  background:#2563eb;
 }
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:20px;
+.btn{
+  border:0;
+  border-radius:9px;
+  padding:9px 13px;
+  margin:3px;
 }
-
+.btn-primary{background:#2563eb;color:white}
+.btn-success{background:#16a34a;color:white}
+.btn-danger{background:#dc2626;color:white}
+.btn-warning{background:#f59e0b;color:white}
+.btn-dark{background:#111827;color:white}
+.btn-light{background:#e5e7eb}
+input,select,textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid #d1d5db;
+  border-radius:9px;
+  margin-top:5px;
+  background:white;
+}
+label{
+  display:block;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+textarea{min-height:90px;resize:vertical}
 table{
   width:100%;
   border-collapse:collapse;
   background:white;
-  border-radius:12px;
-  overflow:hidden;
 }
-
 th,td{
+  padding:10px;
+  border-bottom:1px solid #e5e7eb;
+  text-align:right;
+}
+th{background:#f3f4f6}
+.table-wrap{overflow:auto}
+.section-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px;
+}
+.section-btn{
+  border:2px solid #e5e7eb;
+  background:white;
+  padding:17px;
+  border-radius:13px;
+  text-align:right;
+}
+.section-btn:hover{
+  border-color:#2563eb;
+}
+.section-btn.done{
+  border-color:#16a34a;
+  background:#f0fdf4;
+}
+.section-points{
+  float:left;
+  font-weight:bold;
+}
+.item{
+  border:1px solid #e5e7eb;
+  border-radius:10px;
   padding:12px;
-  border-bottom:1px solid #eee;
+  margin-bottom:8px;
+}
+.item-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.login-screen{
+  position:fixed;
+  inset:0;
+  background:#111827;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:99999;
+  padding:20px;
+}
+.login-box{
+  width:100%;
+  max-width:420px;
+  background:white;
+  border-radius:20px;
+  padding:30px;
   text-align:center;
 }
-
-th{
-  background:#f3f4f6;
+.login-box h1{margin-top:0}
+.error{
+  color:#dc2626;
+  margin-top:10px;
+  display:none;
 }
-
-input,select,textarea{
-  width:100%;
-  padding:11px;
-  border:1px solid #d1d5db;
-  border-radius:9px;
-  margin-top:5px;
-  margin-bottom:12px;
-}
-
-button.primary{
-  background:#111827;
-  color:white;
-  border:0;
-  padding:11px 18px;
-  border-radius:9px;
-  cursor:pointer;
-}
-
-button.danger{
-  background:#dc2626;
-  color:white;
-  border:0;
-  padding:8px 12px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.section{
-  background:white;
-  padding:20px;
-  border-radius:15px;
-  margin-bottom:20px;
-  box-shadow:0 3px 12px #00000010;
-}
-
-.alert{
-  padding:12px;
-  border-radius:10px;
-  margin-bottom:10px;
-  background:#fff7ed;
-  border-right:5px solid #f97316;
-}
-
 .modal{
   display:none;
   position:fixed;
   inset:0;
-  background:#00000070;
-  z-index:100;
+  background:#0008;
+  z-index:5000;
   padding:20px;
   overflow:auto;
 }
-
-.modal-content{
-  background:white;
-  max-width:700px;
+.modal-box{
+  max-width:800px;
   margin:30px auto;
+  background:white;
   border-radius:15px;
-  padding:22px;
+  padding:20px;
 }
-
-.close{
-  float:left;
-  cursor:pointer;
-  font-size:25px;
+.alert{
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:8px;
 }
-
+.alert.red{background:#fee2e2}
+.alert.orange{background:#ffedd5}
+.alert.yellow{background:#fef9c3}
+.alert.green{background:#dcfce7}
+.empty{
+  padding:25px;
+  text-align:center;
+  color:#6b7280;
+}
+.small{font-size:12px;color:#6b7280}
 @media(max-width:600px){
-  .container{
-    padding:12px;
-  }
-
-  .header-content{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  table{
-    font-size:12px;
-  }
+  .container{padding:10px}
+  header{padding:12px}
+  .score{font-size:25px}
+}
+@media print{
+  header,nav,.no-print,.btn{display:none!important}
+  body{background:white}
+  .page{display:none!important}
+  #reports.page.active{display:block!important}
 }
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div style="font-size:50px">🔐</div>
+    <h1>مركز قيادة فروع سندرلا</h1>
+    <p>أدخل رمز الدخول للمتابعة</p>
+
+    <input
+      type="password"
+      id="loginCode"
+      placeholder="رمز الدخول"
+      onkeydown="if(event.key==='Enter')login()"
+    >
+
+    <button class="btn btn-primary" style="width:100%;margin-top:12px" onclick="login()">
+      دخول
+    </button>
+
+    <div class="error" id="loginError">رمز الدخول غير صحيح</div>
+  </div>
+</div>
+
 <header>
-  <div class="header-content">
+  <div class="header-inner">
     <div class="logo">🏠 مركز قيادة فروع سندرلا</div>
-    <div id="date"></div>
+    <div class="user-info">
+      النظام الإداري
+      <button class="btn btn-light" onclick="logout()">خروج</button>
+    </div>
   </div>
 </header>
 
 <div class="container">
 
-<div class="menu">
+<nav>
   <button class="active" onclick="showPage('dashboard',this)">🏠 مركز القيادة</button>
   <button onclick="showPage('branches',this)">🏪 الفروع</button>
-  <button onclick="showPage('evaluation',this)">📝 التقييم اليومي</button>
+  <button onclick="showPage('evaluation',this)">📋 التقييم</button>
   <button onclick="showPage('problems',this)">🚨 المشاكل</button>
   <button onclick="showPage('tasks',this)">✅ المهام</button>
-  <button onclick="showPage('maintenance',this)">🛠️ الصيانة</button>
+  <button onclick="showPage('maintenance',this)">🔧 الصيانة</button>
   <button onclick="showPage('customers',this)">⭐ رضا الزبائن</button>
   <button onclick="showPage('inventory',this)">📦 المخزون</button>
   <button onclick="showPage('waste',this)">🗑️ الهدر</button>
   <button onclick="showPage('reports',this)">📊 التقارير</button>
   <button onclick="showPage('settings',this)">⚙️ الإعدادات</button>
-</div>
-
-<!-- مركز القيادة -->
-
-<div id="dashboard" class="page active">
-
-<h1>🏠 مركز القيادة</h1>
-
-<div class="cards">
-
-<div class="card">
-  <div>عدد الفروع</div>
-  <div class="number" id="totalBranches">13</div>
-</div>
-
-<div class="card">
-  <div>متوسط التقييم</div>
-  <div class="number" id="averageScore">0%</div>
-</div>
-
-<div class="card">
-  <div>🟢 مستقر</div>
-  <div class="number green" id="stableCount">0</div>
-</div>
-
-<div class="card">
-  <div>🟡 يحتاج متابعة</div>
-  <div class="number yellow" id="followCount">0</div>
-</div>
-
-<div class="card">
-  <div>🟠 يحتاج إجراء</div>
-  <div class="number orange" id="actionCount">0</div>
-</div>
-
-<div class="card">
-  <div>🔴 عاجل</div>
-  <div class="number red" id="urgentCount">0</div>
-</div>
-
-</div>
-
-<div class="grid">
-
-<div class="section">
-<h2>📈 الفروع المتحسنة</h2>
-<div id="improved"></div>
-</div>
-
-<div class="section">
-<h2>📉 الفروع المتراجعة</h2>
-<div id="declined"></div>
-</div>
-
-</div>
-
-<div class="section">
-<h2>🚨 المشاكل العاجلة</h2>
-<div id="urgentProblems"></div>
-</div>
-
-<div class="section">
-<h2>🎯 إجراءات اليوم</h2>
-<div id="todayActions"></div>
-</div>
-
-<h2>🏪 حالة الفروع</h2>
-<div class="branches" id="dashboardBranches"></div>
-
-</div>
-
-<!-- الفروع -->
-
-<div id="branches" class="page">
-
-<h1>🏪 الفروع الـ13</h1>
-
-<div class="branches" id="branchList"></div>
-
-</div>
-
-<!-- التقييم -->
-
-<div id="evaluation" class="page">
-
-<h1>📝 التقييم اليومي</h1>
-
-<div class="section">
-
-<label>الفرع</label>
-<select id="evaluationBranch"></select>
-
-<table>
-
-<thead>
-<tr>
-<th>القسم</th>
-<th>الدرجة القصوى</th>
-<th>الدرجة</th>
-</tr>
-</thead>
-
-<tbody id="evaluationTable"></tbody>
-
-</table>
-
-<br>
-
-<button class="primary" onclick="saveEvaluation()">
-💾 حفظ التقييم
-</button>
-
-</div>
-
-</div>
-
-<!-- المشاكل -->
-
-<div id="problems" class="page">
-
-<h1>🚨 المشاكل</h1>
-
-<div class="section">
-
-<label>الفرع</label>
-<select id="problemBranch"></select>
-
-<label>المشكلة</label>
-<textarea id="problemText"></textarea>
-
-<label>الأولوية</label>
-<select id="problemPriority">
-<option value="منخفض">منخفض</option>
-<option value="متوسط">متوسط</option>
-<option value="عالي">عالي</option>
-<option value="عاجل">عاجل</option>
-</select>
-
-<button class="primary" onclick="addProblem()">إضافة المشكلة</button>
-
-</div>
-
-<div id="problemList"></div>
-
-</div>
-
-<!-- المهام -->
-
-<div id="tasks" class="page">
-
-<h1>✅ المهام</h1>
-
-<div class="section">
-
-<label>الفرع</label>
-<select id="taskBranch"></select>
-
-<label>المهمة</label>
-<input id="taskText">
-
-<label>تاريخ الاستحقاق</label>
-<input type="date" id="taskDate">
-
-<button class="primary" onclick="addTask()">إضافة المهمة</button>
-
-</div>
-
-<div id="taskList"></div>
-
-</div>
-
-<!-- الصيانة -->
-
-<div id="maintenance" class="page">
-
-<h1>🛠️ الصيانة</h1>
-
-<div class="section">
-
-<label>الفرع</label>
-<select id="maintenanceBranch"></select>
-
-<label>العطل</label>
-<textarea id="maintenanceText"></textarea>
-
-<button class="primary" onclick="addMaintenance()">إضافة بلاغ</button>
-
-</div>
-
-<div id="maintenanceList"></div>
-
-</div>
-
-<!-- رضا الزبائن -->
-
-<div id="customers" class="page">
-
-<h1>⭐ رضا الزبائن</h1>
-
-<div class="section">
-
-<label>الفرع</label>
-<select id="customerBranch"></select>
-
-<label>التقييم من 5</label>
-<input type="number" id="customerScore" min="1" max="5">
-
-<label>ملاحظة</label>
-<textarea id="customerNote"></textarea>
-
-<button class="primary" onclick="addCustomer()">حفظ التقييم</button>
-
-</div>
-
-<div id="customerList"></div>
-
-</div>
-
-<!-- المخزون -->
-
-<div id="inventory" class="page">
-
-<h1>📦 المخزون</h1>
-
-<div class="section">
-
-<label>الفرع</label>
-<select id="inventoryBranch"></select>
-
-<label>الصنف</label>
-<input id="inventoryItem">
-
-<label>الكمية</label>
-<input type="number" id="inventoryQty">
-
-<label>الحد الأدنى</label>
-<input type="number" id="inventoryMin">
-
-<button class="primary" onclick="addInventory()">حفظ</button>
-
-</div>
-
-<div id="inventoryList"></div>
-
-</div>
-
-<!-- الهدر -->
-
-<div id="waste" class="page">
-
-<h1>🗑️ الهدر</h1>
-
-<div class="section">
-
-<label>الفرع</label>
-<select id="wasteBranch"></select>
-
-<label>الصنف</label>
-<input id="wasteItem">
-
-<label>القيمة بالدينار</label>
-<input type="number" id="wasteValue">
-
-<label>سبب الهدر</label>
-<textarea id="wasteReason"></textarea>
-
-<button class="primary" onclick="addWaste()">حفظ</button>
-
-</div>
-
-<div id="wasteList"></div>
-
-</div>
-
-<!-- التقارير -->
-
-<div id="reports" class="page">
-
-<h1>📊 التقارير</h1>
-
-<div class="section">
-
-<h2>📅 ملخص الأداء</h2>
-
-<div id="reportContent"></div>
-
-<br>
-
-<button class="primary" onclick="window.print()">
-🖨️ طباعة / حفظ PDF
-</button>
-
-</div>
-
-</div>
-
-<!-- الإعدادات -->
-
-<div id="settings" class="page">
-
-<h1>⚙️ إدارة النظام</h1>
-
-<div class="section">
-
-<h2>🏪 الفروع</h2>
-
-<label>اسم الفرع الجديد</label>
-<input id="newBranch">
-
-<button class="primary" onclick="addBranch()">
-➕ إضافة فرع
-</button>
-
-<br><br>
-
-<div id="settingsBranches"></div>
-
-</div>
-
-<div class="section">
-
-<h2>📊 حدود الحالات</h2>
-
-<label>🟢 مستقر من</label>
-<input type="number" id="stableLimit">
-
-<label>🟡 متابعة من</label>
-<input type="number" id="followLimit">
-
-<label>🟠 إجراء من</label>
-<input type="number" id="actionLimit">
-
-<button class="primary" onclick="saveLimits()">
-💾 حفظ الحدود
-</button>
+</nav>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="page active">
+  <div class="card">
+    <h2>🏠 مركز القيادة</h2>
+    <p class="small">نظرة سريعة على حالة جميع الفروع.</p>
+  </div>
+
+  <div class="grid" id="dashboardStats"></div>
+
+  <div class="card">
+    <h3>🚨 غرفة العمليات</h3>
+    <div id="operations"></div>
+  </div>
+
+  <div class="card">
+    <h3>📈 الفروع المتحسنة والمتراجعة</h3>
+    <div class="grid" id="movement"></div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 إجراءات اليوم للإدارة</h3>
+    <div id="todayActions"></div>
+  </div>
+</section>
+
+<!-- BRANCHES -->
+<section id="branches" class="page">
+  <div class="card">
+    <h2>🏪 الفروع الـ13</h2>
+    <div class="grid" id="branchesGrid"></div>
+  </div>
+</section>
+
+<!-- EVALUATION -->
+<section id="evaluation" class="page">
+
+  <div class="card">
+    <h2>📋 التقييم اليومي</h2>
+
+    <div class="grid">
+      <label>
+        الفرع
+        <select id="evaluationBranch" onchange="startEvaluation()"></select>
+      </label>
+
+      <label>
+        اسم المقيّم
+        <input id="evaluator" placeholder="اسم المقيّم">
+      </label>
+    </div>
+  </div>
+
+  <div class="card" id="evaluationStart">
+    <h3>اختر الفرع لبدء التقييم</h3>
+  </div>
+
+  <div class="card" id="sectionBox" style="display:none"></div>
+
+</section>
+
+<!-- PROBLEMS -->
+<section id="problems" class="page">
+  <div class="card">
+    <h2>🚨 المشاكل والمتابعة</h2>
+
+    <div class="grid">
+      <label>الفرع<select id="problemBranch"></select></label>
+      <label>الأولوية
+        <select id="problemPriority">
+          <option>عادي</option>
+          <option>مهم</option>
+          <option>عاجل</option>
+        </select>
+      </label>
+    </div>
+
+    <label>
+      وصف المشكلة
+      <textarea id="problemText" placeholder="اكتب المشكلة بالتفصيل"></textarea>
+    </label>
+
+    <label>
+      المسؤول
+      <input id="problemResponsible" placeholder="اسم المسؤول">
+    </label>
+
+    <button class="btn btn-danger" onclick="addProblem()">إضافة المشكلة</button>
+  </div>
+
+  <div class="card">
+    <h3>قائمة المشاكل</h3>
+    <div id="problemList"></div>
+  </div>
+</section>
+
+<!-- TASKS -->
+<section id="tasks" class="page">
+  <div class="card">
+    <h2>✅ المهام</h2>
+
+    <div class="grid">
+      <label>الفرع<select id="taskBranch"></select></label>
+      <label>تاريخ الاستحقاق<input type="date" id="taskDue"></label>
+    </div>
+
+    <label>
+      المهمة
+      <textarea id="taskText" placeholder="المطلوب تنفيذه"></textarea>
+    </label>
+
+    <label>
+      المسؤول
+      <input id="taskResponsible" placeholder="اسم المسؤول">
+    </label>
+
+    <button class="btn btn-success" onclick="addTask()">إضافة المهمة</button>
+  </div>
+
+  <div class="card">
+    <h3>قائمة المهام</h3>
+    <div id="taskList"></div>
+  </div>
+</section>
+
+<!-- MAINTENANCE -->
+<section id="maintenance" class="page">
+  <div class="card">
+    <h2>🔧 الصيانة</h2>
+
+    <div class="grid">
+      <label>الفرع<select id="maintenanceBranch"></select></label>
+      <label>الحالة
+        <select id="maintenanceStatus">
+          <option>مفتوح</option>
+          <option>قيد المعالجة</option>
+          <option>مكتمل</option>
+        </select>
+      </label>
+    </div>
+
+    <label>
+      العطل
+      <textarea id="maintenanceText" placeholder="وصف العطل"></textarea>
+    </label>
+
+    <label>
+      المسؤول
+      <input id="maintenanceResponsible" placeholder="مسؤول الصيانة">
+    </label>
+
+    <button class="btn btn-warning" onclick="addMaintenance()">تسجيل عطل</button>
+  </div>
+
+  <div class="card">
+    <h3>أعطال الصيانة</h3>
+    <div id="maintenanceList"></div>
+  </div>
+</section>
+
+<!-- CUSTOMERS -->
+<section id="customers" class="page">
+  <div class="card">
+    <h2>⭐ رضا الزبائن</h2>
+
+    <div class="grid">
+      <label>الفرع<select id="customerBranch"></select></label>
+      <label>
+        التقييم
+        <select id="customerScore">
+          <option value="5">5 ⭐⭐⭐⭐⭐</option>
+          <option value="4">4 ⭐⭐⭐⭐</option>
+          <option value="3">3 ⭐⭐⭐</option>
+          <option value="2">2 ⭐⭐</option>
+          <option value="1">1 ⭐</option>
+        </select>
+      </label>
+    </div>
+
+    <label>
+      ملاحظة الزبون
+      <textarea id="customerNote"></textarea>
+    </label>
+
+    <button class="btn btn-primary" onclick="addCustomer()">حفظ تقييم الزبون</button>
+  </div>
+
+  <div class="card">
+    <h3>نتائج رضا الزبائن</h3>
+    <div id="customerList"></div>
+  </div>
+</section>
+
+<!-- INVENTORY -->
+<section id="inventory" class="page">
+  <div class="card">
+    <h2>📦 المخزون</h2>
+
+    <div class="grid">
+      <label>الفرع<select id="inventoryBranch"></select></label>
+      <label>المادة<input id="inventoryItem"></label>
+      <label>الكمية<input type="number" id="inventoryQty"></label>
+      <label>الحد الأدنى<input type="number" id="inventoryMin"></label>
+    </div>
+
+    <button class="btn btn-primary" onclick="addInventory()">حفظ المخزون</button>
+  </div>
+
+  <div class="card">
+    <h3>حالة المخزون</h3>
+    <div id="inventoryList"></div>
+  </div>
+</section>
+
+<!-- WASTE -->
+<section id="waste" class="page">
+  <div class="card">
+    <h2>🗑️ الهدر</h2>
+
+    <div class="grid">
+      <label>الفرع<select id="wasteBranch"></select></label>
+      <label>المادة<input id="wasteItem"></label>
+      <label>الكمية<input type="number" id="wasteQty"></label>
+      <label>قيمة الهدر<input type="number" id="wasteValue" placeholder="د.ع"></label>
+    </div>
+
+    <label>
+      سبب الهدر
+      <textarea id="wasteReason"></textarea>
+    </label>
+
+    <button class="btn btn-danger" onclick="addWaste()">تسجيل الهدر</button>
+  </div>
+
+  <div class="card">
+    <h3>سجل الهدر</h3>
+    <div id="wasteList"></div>
+  </div>
+</section>
+
+<!-- REPORTS -->
+<section id="reports" class="page">
+  <div class="card">
+    <div class="no-print">
+      <h2>📊 التقارير</h2>
+
+      <div class="grid">
+        <label>
+          نوع التقرير
+          <select id="reportType" onchange="renderReports()">
+            <option value="branches">تقرير الفروع</option>
+            <option value="evaluation">التقييمات</option>
+            <option value="maintenance">الصيانة</option>
+            <option value="waste">الهدر</option>
+            <option value="customers">رضا الزبائن</option>
+            <option value="problems">المشاكل</option>
+            <option value="tasks">المهام</option>
+            <option value="inventory">المخزون</option>
+          </select>
+        </label>
+      </div>
+
+      <button class="btn btn-dark" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+    </div>
+
+    <div id="reportContent"></div>
+  </div>
+</section>
+
+<!-- SETTINGS -->
+<section id="settings" class="page">
+
+  <div class="card">
+    <h2>⚙️ الإعدادات</h2>
+
+    <h3>حدود حالة الفرع</h3>
+
+    <div class="grid">
+      <label>
+        مستقر من
+        <input type="number" id="stableLimit">
+      </label>
+
+      <label>
+        يحتاج متابعة من
+        <input type="number" id="followLimit">
+      </label>
+
+      <label>
+        يحتاج إجراء من
+        <input type="number" id="actionLimit">
+      </label>
+    </div>
+
+    <button class="btn btn-primary" onclick="saveLimits()">حفظ الحدود</button>
+  </div>
+
+  <div class="card">
+    <h3>🏪 إدارة الفروع</h3>
+
+    <div class="grid">
+      <label>
+        اسم الفرع الجديد
+        <input id="newBranch">
+      </label>
+    </div>
+
+    <button class="btn btn-success" onclick="addBranch()">إضافة فرع</button>
+
+    <div id="settingsBranches" style="margin-top:15px"></div>
+  </div>
+
+  <div class="card">
+    <h3>🔐 رمز الدخول</h3>
+    <p class="small">الرمز الحالي مضبوط داخل النظام على الرمز الذي طلبته.</p>
+    <p><b>cindrell@123</b></p>
+  </div>
+
+</section>
 
 </div>
 
-</div>
-
+<!-- BRANCH MODAL -->
+<div class="modal" id="branchModal">
+  <div class="modal-box">
+    <button class="btn btn-danger" onclick="closeModal()">إغلاق</button>
+    <div id="branchDetails"></div>
+  </div>
 </div>
 
 <script>
 
-const defaultBranches = [
-"فرع 1","فرع 2","فرع 3","فرع 4","فرع 5",
-"فرع 6","فرع 7","فرع 8","فرع 9","فرع 10",
-"فرع 11","فرع 12","فرع 13"
+/* =========================
+   البيانات الأساسية
+========================= */
+
+const DEFAULT_BRANCHES = [
+  "شعب",
+  "بنوك",
+  "بسماية",
+  "غدير",
+  "حرية",
+  "شهداء البياع",
+  "دورة",
+  "الأعظمية",
+  "حي العامل",
+  "حي جهاد",
+  "بوعيثة",
+  "غزالية",
+  "مدائن"
 ];
 
-const sections = [
-["المنطقة الأمامية",10],
-["المطبخ",20],
-["السلامة العامة",10],
-["التشغيل",15],
-["الكاشير",5],
-["المخزن",10],
-["الأمور الممنوعة",10],
-["سكن العمال",10],
-["سرعة الاستجابة",10]
+const SECTIONS = [
+  {
+    id:"front",
+    name:"المنطقة الأمامية",
+    max:10,
+    items:[
+      "النظافة والترتيب",
+      "واجهة الفرع",
+      "ترتيب الطاولات والكراسي",
+      "نظافة الأرضيات",
+      "نظافة دورات المياه"
+    ]
+  },
+  {
+    id:"kitchen",
+    name:"المطبخ",
+    max:20,
+    items:[
+      "النظافة العامة",
+      "نظافة معدات الطبخ",
+      "سلامة الأغذية",
+      "درجة حفظ المواد",
+      "ترتيب المواد",
+      "الالتزام بالوصفات",
+      "النظافة الشخصية للعاملين",
+      "التخلص من المخلفات"
+    ]
+  },
+  {
+    id:"safety",
+    name:"السلامة العامة",
+    max:10,
+    items:[
+      "طفايات الحريق",
+      "مخارج الطوارئ",
+      "سلامة الكهرباء",
+      "أرضيات وممرات آمنة",
+      "معدات السلامة"
+    ]
+  },
+  {
+    id:"operation",
+    name:"التشغيل",
+    max:15,
+    items:[
+      "الالتزام بأوقات العمل",
+      "تنظيم العمل",
+      "سرعة تجهيز الطلب",
+      "التزام الموظفين بالتعليمات",
+      "جودة الخدمة"
+    ]
+  },
+  {
+    id:"cashier",
+    name:"الكاشير",
+    max:5,
+    items:[
+      "دقة الحساب",
+      "التعامل مع الزبون",
+      "تنظيم منطقة الكاشير",
+      "إغلاق الصندوق"
+    ]
+  },
+  {
+    id:"store",
+    name:"المخزن",
+    max:10,
+    items:[
+      "ترتيب المخزن",
+      "النظافة",
+      "صلاحية المواد",
+      "طريقة التخزين",
+      "متابعة النواقص"
+    ]
+  },
+  {
+    id:"prohibited",
+    name:"الأمور الممنوعة",
+    max:10,
+    items:[
+      "عدم وجود مخالفات",
+      "عدم التدخين في الأماكن الممنوعة",
+      "عدم استخدام مواد غير معتمدة",
+      "عدم وجود مخالفات إدارية",
+      "الالتزام بالتعليمات"
+    ]
+  },
+  {
+    id:"housing",
+    name:"سكن العمال",
+    max:10,
+    items:[
+      "النظافة",
+      "الترتيب",
+      "السلامة",
+      "توفر الاحتياجات الأساسية",
+      "الالتزام بالتعليمات"
+    ]
+  },
+  {
+    id:"response",
+    name:"سرعة الاستجابة",
+    max:10,
+    items:[
+      "سرعة التعامل مع طلب الزبون",
+      "سرعة معالجة المشكلة",
+      "سرعة الاستجابة للإدارة",
+      "سرعة الاستجابة للصيانة",
+      "سرعة تنفيذ التعليمات"
+    ]
+  }
 ];
 
-let branches =
-JSON.parse(localStorage.getItem("branches")) ||
-defaultBranches;
+/* =========================
+   التخزين
+========================= */
 
-let evaluations =
-JSON.parse(localStorage.getItem("evaluations")) || {};
+function getData(key, fallback){
+  try{
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  }catch(e){
+    return fallback;
+  }
+}
 
-let problems =
-JSON.parse(localStorage.getItem("problems")) || [];
+function setData(key,value){
+  localStorage.setItem(key,JSON.stringify(value));
+}
 
-let tasks =
-JSON.parse(localStorage.getItem("tasks")) || [];
+let branches = getData("branches", DEFAULT_BRANCHES);
 
-let maintenance =
-JSON.parse(localStorage.getItem("maintenance")) || [];
+let evaluations = getData("evaluations", []);
 
-let customers =
-JSON.parse(localStorage.getItem("customers")) || [];
+let problems = getData("problems", []);
 
-let inventory =
-JSON.parse(localStorage.getItem("inventory")) || [];
+let tasks = getData("tasks", []);
 
-let waste =
-JSON.parse(localStorage.getItem("waste")) || [];
+let maintenance = getData("maintenance", []);
 
-let limits =
-JSON.parse(localStorage.getItem("limits")) || {
-stable:90,
-follow:80,
-action:70
-};
+let customers = getData("customers", []);
 
-function saveAll(){
+let inventory = getData("inventory", []);
 
-localStorage.setItem("branches",JSON.stringify(branches));
-localStorage.setItem("evaluations",JSON.stringify(evaluations));
-localStorage.setItem("problems",JSON.stringify(problems));
-localStorage.setItem("tasks",JSON.stringify(tasks));
-localStorage.setItem("maintenance",JSON.stringify(maintenance));
-localStorage.setItem("customers",JSON.stringify(customers));
-localStorage.setItem("inventory",JSON.stringify(inventory));
-localStorage.setItem("waste",JSON.stringify(waste));
-localStorage.setItem("limits",JSON.stringify(limits));
+let waste = getData("waste", []);
+
+let limits = getData("limits",{
+  stable:90,
+  follow:80,
+  action:70
+});
+
+/* =========================
+   الدخول
+========================= */
+
+const LOGIN_CODE = "cindrell@123";
+
+function login(){
+
+  const code = document.getElementById("loginCode").value;
+
+  if(code === LOGIN_CODE){
+
+    sessionStorage.setItem("loggedIn","1");
+
+    document.getElementById("loginScreen").style.display="none";
+
+  }else{
+
+    document.getElementById("loginError").style.display="block";
+
+  }
+}
+
+function logout(){
+
+  sessionStorage.removeItem("loggedIn");
+
+  location.reload();
 
 }
+
+if(sessionStorage.getItem("loggedIn")==="1"){
+  document.getElementById("loginScreen").style.display="none";
+}
+
+/* =========================
+   الصفحات
+========================= */
 
 function showPage(id,btn){
 
-document.querySelectorAll(".page")
-.forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p=>{
+    p.classList.remove("active");
+  });
 
-document.getElementById(id)
-.classList.add("active");
+  document.getElementById(id).classList.add("active");
 
-document.querySelectorAll(".menu button")
-.forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll("nav button").forEach(b=>{
+    b.classList.remove("active");
+  });
 
-if(btn) btn.classList.add("active");
+  if(btn) btn.classList.add("active");
 
-renderAll();
-
+  renderAll();
 }
 
-function status(score){
+/* =========================
+   الفروع
+========================= */
 
-if(score>=limits.stable)
-return ["🟢 مستقر","green"];
+function fillBranchSelects(){
 
-if(score>=limits.follow)
-return ["🟡 يحتاج متابعة","yellow"];
+  const ids = [
+    "evaluationBranch",
+    "problemBranch",
+    "taskBranch",
+    "maintenanceBranch",
+    "customerBranch",
+    "inventoryBranch",
+    "wasteBranch"
+  ];
 
-if(score>=limits.action)
-return ["🟠 يحتاج إجراء","orange"];
+  ids.forEach(id=>{
 
-return ["🔴 عاجل","red"];
+    const select=document.getElementById(id);
 
+    if(!select) return;
+
+    const old=select.value;
+
+    select.innerHTML="<option value=''>اختر الفرع</option>";
+
+    branches.forEach(branch=>{
+      const option=document.createElement("option");
+      option.value=branch;
+      option.textContent=branch;
+      select.appendChild(option);
+    });
+
+    if(branches.includes(old)){
+      select.value=old;
+    }
+
+  });
+}
+
+/* =========================
+   حالة الفرع
+========================= */
+
+function getBranchEvaluation(branch){
+
+  const records=evaluations.filter(e=>e.branch===branch);
+
+  if(!records.length) return null;
+
+  records.sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+  return records[0];
 }
 
 function getScore(branch){
 
-let e=evaluations[branch];
+  const evaluation=getBranchEvaluation(branch);
 
-if(!e) return 0;
+  if(!evaluation) return 0;
 
-let total=0;
+  let total=0;
 
-sections.forEach((s,i)=>{
-total += Number(e[i] || 0);
-});
+  SECTIONS.forEach(section=>{
+    total += Number(evaluation.sections?.[section.id]?.score || 0);
+  });
 
-return Math.round(total);
-
+  return total;
 }
 
-function renderBranches(){
+function getStatus(score){
 
-let html="";
+  if(score>=limits.stable)
+    return {text:"مستقر",class:"green"};
 
-branches.forEach(branch=>{
+  if(score>=limits.follow)
+    return {text:"يحتاج متابعة",class:"yellow"};
 
-let score=getScore(branch);
-let st=status(score);
+  if(score>=limits.action)
+    return {text:"يحتاج إجراء",class:"orange"};
 
-html+=`
-
-<div class="branch"
-onclick="openBranch('${branch}')">
-
-<h3>🏪 ${branch}</h3>
-
-<div class="number">${score}%</div>
-
-<span class="status ${st[1]}">
-${st[0]}
-</span>
-
-<div class="progress">
-<div style="width:${score}%"></div>
-</div>
-
-<div>
-🚨 مشاكل: ${problems.filter(x=>x.branch===branch && x.status!=="مغلقة").length}
-</div>
-
-</div>
-`;
-
-});
-
-document.getElementById("dashboardBranches").innerHTML=html;
-document.getElementById("branchList").innerHTML=html;
-
+  return {text:"عاجل",class:"red"};
 }
+
+/* =========================
+   لوحة القيادة
+========================= */
 
 function renderDashboard(){
 
-let scores=branches.map(getScore);
+  let stable=0,
+      follow=0,
+      action=0,
+      urgent=0;
 
-let valid=scores.filter(x=>x>0);
+  branches.forEach(branch=>{
 
-let avg=valid.length
-? Math.round(valid.reduce((a,b)=>a+b,0)/valid.length)
-:0;
+    const score=getScore(branch);
+    const st=getStatus(score);
 
-document.getElementById("averageScore").innerText=avg+"%";
+    if(st.class==="green") stable++;
+    else if(st.class==="yellow") follow++;
+    else if(st.class==="orange") action++;
+    else urgent++;
 
-let counts={green:0,yellow:0,orange:0,red:0};
+  });
 
-scores.forEach(s=>{
-counts[status(s)[1]]++;
-});
+  const scores=branches.map(getScore);
 
-document.getElementById("stableCount").innerText=counts.green;
-document.getElementById("followCount").innerText=counts.yellow;
-document.getElementById("actionCount").innerText=counts.orange;
-document.getElementById("urgentCount").innerText=counts.red;
+  const avg=scores.length
+    ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)
+    : 0;
 
-let urgent=problems.filter(
-x=>x.priority==="عاجل" && x.status!=="مغلقة"
-);
+  document.getElementById("dashboardStats").innerHTML=`
 
-document.getElementById("urgentProblems").innerHTML=
-urgent.length
-? urgent.map(x=>`
-<div class="alert">
-🚨 <b>${x.branch}</b><br>
-${x.text}
-</div>`).join("")
-:"لا توجد مشاكل عاجلة.";
+    <div class="stat">
+      🏪 عدد الفروع
+      <div class="number">${branches.length}</div>
+    </div>
 
-document.getElementById("todayActions").innerHTML=
-tasks.filter(x=>x.status!=="مكتملة")
-.map(x=>`
-<div class="alert">
-🎯 ${x.branch} — ${x.text}
-</div>
-`).join("") || "لا توجد إجراءات معلقة.";
+    <div class="stat">
+      📊 متوسط التقييم
+      <div class="number">${avg}%</div>
+    </div>
 
-document.getElementById("improved").innerHTML=
-"سيتم تفعيل التحليل الزمني بعد تسجيل عدة تقييمات.";
+    <div class="stat">
+      🟢 مستقر
+      <div class="number green">${stable}</div>
+    </div>
 
-document.getElementById("declined").innerHTML=
-"سيتم تفعيل التحليل الزمني بعد تسجيل عدة تقييمات.";
+    <div class="stat">
+      🟡 يحتاج متابعة
+      <div class="number yellow">${follow}</div>
+    </div>
+
+    <div class="stat">
+      🟠 يحتاج إجراء
+      <div class="number orange">${action}</div>
+    </div>
+
+    <div class="stat">
+      🔴 عاجل
+      <div class="number red">${urgent}</div>
+    </div>
+
+  `;
+
+  renderOperations();
+
+  renderMovement();
+
+  renderTodayActions();
+}
+
+/* =========================
+   غرفة العمليات
+========================= */
+
+function renderOperations(){
+
+  let html="";
+
+  problems
+    .filter(p=>p.status!=="مغلق")
+    .filter(p=>p.priority==="عاجل")
+    .forEach(p=>{
+
+      html+=`
+      <div class="alert red">
+        🔴 <b>${p.branch}</b>
+        — ${escapeHtml(p.text)}
+        <br>
+        <span class="small">المسؤول: ${escapeHtml(p.responsible||"غير محدد")}</span>
+      </div>
+      `;
+
+    });
+
+  tasks
+    .filter(t=>t.status!=="مكتملة")
+    .filter(t=>t.due && new Date(t.due)<new Date())
+    .forEach(t=>{
+
+      html+=`
+      <div class="alert orange">
+        ⏰ <b>${t.branch}</b>
+        — مهمة متأخرة:
+        ${escapeHtml(t.text)}
+      </div>
+      `;
+
+    });
+
+  maintenance
+    .filter(m=>m.status!=="مكتمل")
+    .forEach(m=>{
+
+      html+=`
+      <div class="alert yellow">
+        🔧 <b>${m.branch}</b>
+        — عطل مفتوح:
+        ${escapeHtml(m.text)}
+      </div>
+      `;
+
+    });
+
+  if(!html)
+    html=`<div class="alert green">✅ لا توجد حالات عاجلة حاليًا.</div>`;
+
+  document.getElementById("operations").innerHTML=html;
+}
+
+/* =========================
+   التحسن والتراجع
+========================= */
+
+function getPreviousScore(branch){
+
+  const records=evaluations
+    .filter(e=>e.branch===branch)
+    .sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+  if(records.length<2) return null;
+
+  const previous=records[1];
+
+  let total=0;
+
+  SECTIONS.forEach(s=>{
+    total += Number(previous.sections?.[s.id]?.score || 0);
+  });
+
+  return total;
+}
+
+function renderMovement(){
+
+  const improved=[];
+  const declined=[];
+
+  branches.forEach(branch=>{
+
+    const current=getScore(branch);
+    const previous=getPreviousScore(branch);
+
+    if(previous===null) return;
+
+    const diff=current-previous;
+
+    if(diff>0) improved.push({branch,diff});
+    if(diff<0) declined.push({branch,diff});
+
+  });
+
+  improved.sort((a,b)=>b.diff-a.diff);
+  declined.sort((a,b)=>a.diff-b.diff);
+
+  let html="";
+
+  html+=`
+    <div class="stat">
+      <h4>📈 المتحسنة</h4>
+      ${
+        improved.length
+        ? improved.slice(0,5).map(x=>
+          `<p>🟢 ${x.branch} <b>+${x.diff}%</b></p>`
+        ).join("")
+        : "<p class='small'>لا توجد مقارنة كافية.</p>"
+      }
+    </div>
+  `;
+
+  html+=`
+    <div class="stat">
+      <h4>📉 المتراجعة</h4>
+      ${
+        declined.length
+        ? declined.slice(0,5).map(x=>
+          `<p>🔴 ${x.branch} <b>${x.diff}%</b></p>`
+        ).join("")
+        : "<p class='small'>لا توجد مقارنة كافية.</p>"
+      }
+    </div>
+  `;
+
+  document.getElementById("movement").innerHTML=html;
+}
+
+/* =========================
+   إجراءات اليوم
+========================= */
+
+function renderTodayActions(){
+
+  const actions=[];
+
+  branches.forEach(branch=>{
+
+    const score=getScore(branch);
+
+    if(score<limits.action){
+      actions.push(`🔴 مراجعة عاجلة لفرع ${branch}`);
+    }
+
+  });
+
+  problems
+    .filter(p=>p.status!=="مغلق")
+    .forEach(p=>{
+      actions.push(`🚨 متابعة مشكلة في ${p.branch}`);
+    });
+
+  maintenance
+    .filter(m=>m.status!=="مكتمل")
+    .forEach(m=>{
+      actions.push(`🔧 متابعة صيانة ${m.branch}`);
+    });
+
+  tasks
+    .filter(t=>t.status!=="مكتملة")
+    .filter(t=>t.due && new Date(t.due)<new Date())
+    .forEach(t=>{
+      actions.push(`⏰ مهمة متأخرة في ${t.branch}`);
+    });
+
+  if(!actions.length){
+    document.getElementById("todayActions").innerHTML=
+      `<div class="alert green">✅ لا توجد إجراءات عاجلة.</div>`;
+    return;
+  }
+
+  document.getElementById("todayActions").innerHTML=
+    actions.map(a=>`<div class="alert orange">${a}</div>`).join("");
 
 }
 
-function fillSelect(id){
+/* =========================
+   بطاقات الفروع
+========================= */
 
-let select=document.getElementById(id);
+function renderBranches(){
 
-if(!select)return;
+  const grid=document.getElementById("branchesGrid");
 
-select.innerHTML=branches
-.map(b=>`<option value="${b}">${b}</option>`)
-.join("");
+  grid.innerHTML=branches.map((branch,index)=>{
+
+    const score=getScore(branch);
+    const st=getStatus(score);
+
+    return `
+      <div class="branch-card">
+
+        <div class="branch-title">
+          <h3>${index+1}. ${branch}</h3>
+          <span class="badge ${st.class}">${st.text}</span>
+        </div>
+
+        <div class="score">${score}%</div>
+
+        <div class="progress">
+          <div style="width:${Math.min(score,100)}%"></div>
+        </div>
+
+        <p class="small">
+          المشاكل المفتوحة:
+          ${problems.filter(p=>p.branch===branch&&p.status!=="مغلق").length}
+          <br>
+          أعطال الصيانة:
+          ${maintenance.filter(m=>m.branch===branch&&m.status!=="مكتمل").length}
+        </p>
+
+        <button class="btn btn-primary" onclick="openBranch('${encodeURIComponent(branch)}')">
+          فتح ملف الفرع
+        </button>
+
+      </div>
+    `;
+
+  }).join("");
+}
+
+/* =========================
+   ملف الفرع
+========================= */
+
+function openBranch(encoded){
+
+  const branch=decodeURIComponent(encoded);
+
+  const score=getScore(branch);
+  const st=getStatus(score);
+
+  const evaluation=getBranchEvaluation(branch);
+
+  let html=`
+
+    <h2>🏪 ${branch}</h2>
+
+    <div class="stat">
+      <div class="small">التقييم الحالي</div>
+      <div class="score">${score}%</div>
+      <span class="badge ${st.class}">${st.text}</span>
+    </div>
+
+    <h3>📋 الأقسام</h3>
+
+  `;
+
+  SECTIONS.forEach(section=>{
+
+    const data=evaluation?.sections?.[section.id];
+
+    html+=`
+      <div class="item">
+
+        <div class="item-row">
+          <b>${section.name}</b>
+
+          <span>
+            ${data?.score || 0} / ${section.max}
+          </span>
+        </div>
+
+        <div class="small">
+          ${data?.notes ? escapeHtml(data.notes) : "لا توجد ملاحظات"}
+        </div>
+
+      </div>
+    `;
+
+  });
+
+  html+=`
+    <h3>🚨 المشاكل</h3>
+    ${
+      problems.filter(p=>p.branch===branch).length
+      ?
+      problems.filter(p=>p.branch===branch)
+      .map(p=>`
+        <div class="alert ${p.priority==="عاجل"?"red":"yellow"}">
+          ${p.priority} — ${escapeHtml(p.text)}
+          <br>
+          الحالة: ${p.status}
+        </div>
+      `).join("")
+      :
+      "<p class='small'>لا توجد مشاكل.</p>"
+    }
+
+    <h3>🔧 الصيانة</h3>
+    ${
+      maintenance.filter(m=>m.branch===branch).length
+      ?
+      maintenance.filter(m=>m.branch===branch)
+      .map(m=>`
+        <div class="alert yellow">
+          ${escapeHtml(m.text)}
+          <br>
+          الحالة: ${m.status}
+        </div>
+      `).join("")
+      :
+      "<p class='small'>لا توجد أعطال.</p>"
+    }
+  `;
+
+  document.getElementById("branchDetails").innerHTML=html;
+
+  document.getElementById("branchModal").style.display="block";
+}
+
+function closeModal(){
+  document.getElementById("branchModal").style.display="none";
+}
+
+/* =========================
+   التقييم
+========================= */
+
+let currentSectionIndex=0;
+let currentEvaluation={};
+
+function startEvaluation(){
+
+  const branch=document.getElementById("evaluationBranch").value;
+
+  if(!branch){
+    document.getElementById("evaluationStart").innerHTML=
+      "<h3>اختر الفرع لبدء التقييم</h3>";
+    document.getElementById("sectionBox").style.display="none";
+    return;
+  }
+
+  currentSectionIndex=0;
+
+  const old=getBranchEvaluation(branch);
+
+  currentEvaluation=old
+    ? JSON.parse(JSON.stringify(old))
+    : {
+        branch:branch,
+        evaluator:"",
+        date:new Date().toISOString(),
+        sections:{}
+      };
+
+  document.getElementById("sectionBox").style.display="block";
+
+  renderSection();
 
 }
 
-function renderEvaluation(){
+function renderSection(){
 
-let table="";
+  const section=SECTIONS[currentSectionIndex];
 
-sections.forEach((s,i)=>{
+  if(!section) return;
 
-table+=`
-<tr>
-<td>${s[0]}</td>
-<td>${s[1]}</td>
-<td>
-<input
-type="number"
-min="0"
-max="${s[1]}"
-id="score_${i}"
-value="${evaluations[
-document.getElementById("evaluationBranch").value
-]?.[i] || 0}">
-</td>
-</tr>
-`;
+  const old=currentEvaluation.sections?.[section.id] || {};
 
-});
+  let items="";
 
-document.getElementById("evaluationTable").innerHTML=table;
+  section.items.forEach((item,i)=>{
+
+    const value=old.items?.[i] ?? Math.round(section.max/section.items.length);
+
+    const maxItem=Math.max(
+      1,
+      Math.ceil(section.max/section.items.length)
+    );
+
+    items+=`
+      <div class="item">
+
+        <div class="item-row">
+          <span>${i+1}. ${item}</span>
+
+          <select
+            id="item_${i}"
+            style="max-width:120px"
+          >
+            ${Array.from({length:maxItem+1},(_,n)=>
+              `<option value="${n}" ${Number(value)===n?"selected":""}>${n}</option>`
+            ).join("")}
+          </select>
+        </div>
+
+      </div>
+    `;
+
+  });
+
+  document.getElementById("sectionBox").innerHTML=`
+
+    <div class="branch-title">
+      <h2>${section.name}</h2>
+      <span class="badge green">${section.max} نقطة</span>
+    </div>
+
+    <p class="small">
+      القسم ${currentSectionIndex+1} من ${SECTIONS.length}
+    </p>
+
+    ${items}
+
+    <label>
+      ملاحظات القسم
+      <textarea id="sectionNotes">${escapeHtml(old.notes||"")}</textarea>
+    </label>
+
+    <div>
+      ${
+        currentSectionIndex>0
+        ?
+        `<button class="btn btn-light" onclick="previousSection()">⬅️ السابق</button>`
+        :
+        ""
+      }
+
+      <button class="btn btn-primary" onclick="saveSection()">
+        ${
+          currentSectionIndex===SECTIONS.length-1
+          ? "📤 حفظ وإرسال التقييم"
+          : "💾 حفظ القسم والانتقال"
+        }
+      </button>
+    </div>
+
+  `;
 
 }
 
-function saveEvaluation(){
+/* =========================
+   حفظ القسم
+========================= */
 
-let branch=document.getElementById("evaluationBranch").value;
+function saveSection(){
 
-let data={};
+  const section=SECTIONS[currentSectionIndex];
 
-sections.forEach((s,i)=>{
-let value=Number(
-document.getElementById("score_"+i).value
-);
+  let itemScores=[];
 
-if(value>s[1]) value=s[1];
-if(value<0) value=0;
+  section.items.forEach((item,i)=>{
 
-data[i]=value;
-});
+    const el=document.getElementById("item_"+i);
 
-evaluations[branch]=data;
+    itemScores.push(Number(el.value));
 
-saveAll();
+  });
 
-alert("تم حفظ التقييم بنجاح ✅");
+  let score=itemScores.reduce((a,b)=>a+b,0);
 
-renderAll();
+  /*
+    نضمن ألا تتجاوز درجة القسم الحد الأعلى.
+  */
+  score=Math.min(score,section.max);
+
+  if(!currentEvaluation.sections)
+    currentEvaluation.sections={};
+
+  currentEvaluation.sections[section.id]={
+    score:score,
+    items:itemScores,
+    notes:document.getElementById("sectionNotes").value
+  };
+
+  currentEvaluation.evaluator=
+    document.getElementById("evaluator").value || "غير محدد";
+
+  currentEvaluation.date=new Date().toISOString();
+
+  if(currentSectionIndex===SECTIONS.length-1){
+
+    const existingIndex=evaluations.findIndex(e=>
+      e.branch===currentEvaluation.branch
+    );
+
+    if(existingIndex>=0)
+      evaluations[existingIndex]=currentEvaluation;
+    else
+      evaluations.push(currentEvaluation);
+
+    setData("evaluations",evaluations);
+
+    alert("✅ تم حفظ التقييم الكامل وإرساله إلى سجل الإدارة.");
+
+    renderAll();
+
+    return;
+  }
+
+  currentSectionIndex++;
+
+  renderSection();
 
 }
+
+function previousSection(){
+
+  if(currentSectionIndex>0){
+    currentSectionIndex--;
+    renderSection();
+  }
+
+}
+
+/* =========================
+   المشاكل
+========================= */
 
 function addProblem(){
 
-let branch=document.getElementById("problemBranch").value;
+  const branch=document.getElementById("problemBranch").value;
+  const text=document.getElementById("problemText").value.trim();
+  const priority=document.getElementById("problemPriority").value;
+  const responsible=document.getElementById("problemResponsible").value.trim();
 
-let text=document.getElementById("problemText").value.trim();
+  if(!branch||!text){
+    alert("اختر الفرع واكتب المشكلة.");
+    return;
+  }
 
-if(!text){
-alert("اكتب المشكلة");
-return;
-}
+  problems.push({
+    id:Date.now(),
+    branch,
+    text,
+    priority,
+    responsible,
+    status:"مفتوح",
+    date:new Date().toISOString()
+  });
 
-problems.push({
-id:Date.now(),
-branch,
-text,
-priority:document.getElementById("problemPriority").value,
-status:"مفتوحة",
-date:new Date().toLocaleDateString("ar-IQ")
-});
+  setData("problems",problems);
 
-document.getElementById("problemText").value="";
+  document.getElementById("problemText").value="";
+  document.getElementById("problemResponsible").value="";
 
-saveAll();
-renderAll();
+  renderAll();
 
-}
-
-function addTask(){
-
-let branch=document.getElementById("taskBranch").value;
-let text=document.getElementById("taskText").value;
-let date=document.getElementById("taskDate").value;
-
-if(!text)return;
-
-tasks.push({
-id:Date.now(),
-branch,
-text,
-date,
-status:"مفتوحة"
-});
-
-saveAll();
-renderAll();
-
-}
-
-function completeTask(id){
-
-let task=tasks.find(x=>x.id===id);
-
-if(task) task.status="مكتملة";
-
-saveAll();
-renderAll();
+  alert("✅ تم تسجيل المشكلة.");
 
 }
 
 function closeProblem(id){
 
-let p=problems.find(x=>x.id===id);
+  const p=problems.find(x=>x.id===id);
 
-if(p)p.status="مغلقة";
+  if(p){
+    p.status="مغلق";
+    p.closedAt=new Date().toISOString();
+  }
 
-saveAll();
-renderAll();
+  setData("problems",problems);
+
+  renderAll();
 
 }
+
+/* =========================
+   المهام
+========================= */
+
+function addTask(){
+
+  const branch=document.getElementById("taskBranch").value;
+  const text=document.getElementById("taskText").value.trim();
+  const due=document.getElementById("taskDue").value;
+  const responsible=document.getElementById("taskResponsible").value.trim();
+
+  if(!branch||!text){
+    alert("اختر الفرع واكتب المهمة.");
+    return;
+  }
+
+  tasks.push({
+    id:Date.now(),
+    branch,
+    text,
+    due,
+    responsible,
+    status:"مفتوحة",
+    date:new Date().toISOString()
+  });
+
+  setData("tasks",tasks);
+
+  document.getElementById("taskText").value="";
+  document.getElementById("taskResponsible").value="";
+
+  renderAll();
+
+  alert("✅ تم إضافة المهمة.");
+
+}
+
+function completeTask(id){
+
+  const task=tasks.find(x=>x.id===id);
+
+  if(task){
+    task.status="مكتملة";
+    task.completedAt=new Date().toISOString();
+  }
+
+  setData("tasks",tasks);
+
+  renderAll();
+
+}
+
+/* =========================
+   الصيانة
+========================= */
 
 function addMaintenance(){
 
-let branch=document.getElementById("maintenanceBranch").value;
-let text=document.getElementById("maintenanceText").value;
+  const branch=document.getElementById("maintenanceBranch").value;
+  const text=document.getElementById("maintenanceText").value.trim();
+  const status=document.getElementById("maintenanceStatus").value;
+  const responsible=document.getElementById("maintenanceResponsible").value.trim();
 
-if(!text)return;
+  if(!branch||!text){
+    alert("اختر الفرع واكتب العطل.");
+    return;
+  }
 
-maintenance.push({
-id:Date.now(),
-branch,
-text,
-status:"مفتوح",
-date:new Date().toLocaleDateString("ar-IQ")
-});
+  maintenance.push({
+    id:Date.now(),
+    branch,
+    text,
+    status,
+    responsible,
+    date:new Date().toISOString()
+  });
 
-document.getElementById("maintenanceText").value="";
+  setData("maintenance",maintenance);
 
-saveAll();
-renderAll();
+  document.getElementById("maintenanceText").value="";
+  document.getElementById("maintenanceResponsible").value="";
+
+  renderAll();
+
+  alert("🔧 تم تسجيل العطل.");
 
 }
+
+function updateMaintenance(id,status){
+
+  const m=maintenance.find(x=>x.id===id);
+
+  if(m){
+    m.status=status;
+
+    if(status==="مكتمل"){
+      m.completedAt=new Date().toISOString();
+    }
+  }
+
+  setData("maintenance",maintenance);
+
+  renderAll();
+
+}
+
+/* =========================
+   رضا الزبائن
+========================= */
 
 function addCustomer(){
 
-let branch=document.getElementById("customerBranch").value;
-let score=Number(document.getElementById("customerScore").value);
-let note=document.getElementById("customerNote").value;
+  const branch=document.getElementById("customerBranch").value;
+  const score=Number(document.getElementById("customerScore").value);
+  const note=document.getElementById("customerNote").value.trim();
 
-if(score<1 || score>5){
-alert("التقييم يجب أن يكون من 1 إلى 5");
-return;
+  if(!branch){
+    alert("اختر الفرع.");
+    return;
+  }
+
+  customers.push({
+    id:Date.now(),
+    branch,
+    score,
+    note,
+    date:new Date().toISOString()
+  });
+
+  setData("customers",customers);
+
+  document.getElementById("customerNote").value="";
+
+  renderAll();
+
+  alert("⭐ تم حفظ تقييم الزبون.");
+
 }
 
-customers.push({
-id:Date.now(),
-branch,
-score,
-note,
-date:new Date().toLocaleDateString("ar-IQ")
-});
-
-saveAll();
-renderAll();
-
-}
+/* =========================
+   المخزون
+========================= */
 
 function addInventory(){
 
-let branch=document.getElementById("inventoryBranch").value;
-let item=document.getElementById("inventoryItem").value;
-let qty=Number(document.getElementById("inventoryQty").value);
-let min=Number(document.getElementById("inventoryMin").value);
+  const branch=document.getElementById("inventoryBranch").value;
+  const item=document.getElementById("inventoryItem").value.trim();
+  const qty=Number(document.getElementById("inventoryQty").value);
+  const min=Number(document.getElementById("inventoryMin").value);
 
-if(!item)return;
+  if(!branch||!item){
+    alert("أدخل الفرع والمادة.");
+    return;
+  }
 
-inventory.push({
-id:Date.now(),
-branch,
-item,
-qty,
-min
-});
+  inventory.push({
+    id:Date.now(),
+    branch,
+    item,
+    qty,
+    min,
+    date:new Date().toISOString()
+  });
 
-saveAll();
-renderAll();
+  setData("inventory",inventory);
+
+  document.getElementById("inventoryItem").value="";
+  document.getElementById("inventoryQty").value="";
+  document.getElementById("inventoryMin").value="";
+
+  renderAll();
 
 }
+
+/* =========================
+   الهدر
+========================= */
 
 function addWaste(){
 
-let branch=document.getElementById("wasteBranch").value;
-let item=document.getElementById("wasteItem").value;
-let value=Number(document.getElementById("wasteValue").value);
-let reason=document.getElementById("wasteReason").value;
+  const branch=document.getElementById("wasteBranch").value;
+  const item=document.getElementById("wasteItem").value.trim();
+  const qty=Number(document.getElementById("wasteQty").value);
+  const value=Number(document.getElementById("wasteValue").value);
+  const reason=document.getElementById("wasteReason").value.trim();
 
-if(!item)return;
+  if(!branch||!item){
+    alert("أدخل الفرع والمادة.");
+    return;
+  }
 
-waste.push({
-id:Date.now(),
-branch,
-item,
-value,
-reason,
-date:new Date().toLocaleDateString("ar-IQ")
-});
+  waste.push({
+    id:Date.now(),
+    branch,
+    item,
+    qty,
+    value,
+    reason,
+    date:new Date().toISOString()
+  });
 
-saveAll();
-renderAll();
+  setData("waste",waste);
+
+  document.getElementById("wasteItem").value="";
+  document.getElementById("wasteQty").value="";
+  document.getElementById("wasteValue").value="";
+  document.getElementById("wasteReason").value="";
+
+  renderAll();
 
 }
+
+/* =========================
+   القوائم
+========================= */
 
 function renderLists(){
 
-document.getElementById("problemList").innerHTML=
-problems.length
-? problems.map(x=>`
-<div class="section">
-<b>🏪 ${x.branch}</b>
-<p>${x.text}</p>
-<span class="status ${x.priority==="عاجل"?"red":"yellow"}">
-${x.priority}
-</span>
-<p>الحالة: ${x.status}</p>
-${x.status!=="مغلقة"
-?`<button class="primary" onclick="closeProblem(${x.id})">إغلاق المشكلة</button>`
-:"✅ مغلقة"}
-</div>
-`).join("")
-:"لا توجد مشاكل.";
+  /* المشاكل */
 
-document.getElementById("taskList").innerHTML=
-tasks.length
-? tasks.map(x=>`
-<div class="section">
-<b>${x.branch}</b>
-<p>${x.text}</p>
-<p>الاستحقاق: ${x.date || "-"}</p>
-<p>الحالة: ${x.status}</p>
-${x.status!=="مكتملة"
-?`<button class="primary" onclick="completeTask(${x.id})">إنجاز المهمة</button>`
-:"✅ مكتملة"}
-</div>
-`).join("")
-:"لا توجد مهام.";
+  const pl=document.getElementById("problemList");
 
-document.getElementById("maintenanceList").innerHTML=
-maintenance.map(x=>`
-<div class="section">
-<b>🏪 ${x.branch}</b>
-<p>${x.text}</p>
-<p>التاريخ: ${x.date}</p>
-<p>الحالة: ${x.status}</p>
-</div>
-`).join("") || "لا توجد أعطال.";
+  if(!problems.length){
 
-document.getElementById("customerList").innerHTML=
-customers.map(x=>`
-<div class="section">
-<b>${x.branch}</b>
-<p>⭐ ${x.score}/5</p>
-<p>${x.note || ""}</p>
-</div>
-`).join("") || "لا توجد تقييمات.";
+    pl.innerHTML="<div class='empty'>لا توجد مشاكل.</div>";
 
-document.getElementById("inventoryList").innerHTML=
-inventory.map(x=>`
-<div class="section">
-<b>${x.branch}</b>
-<p>${x.item}</p>
-<p>الكمية: ${x.qty}</p>
-<p>الحد الأدنى: ${x.min}</p>
-${x.qty<=x.min
-?'<span class="status red">⚠️ مخزون منخفض</span>'
-:'<span class="status green">🟢 جيد</span>'}
-</div>
-`).join("") || "لا توجد بيانات.";
+  }else{
 
-document.getElementById("wasteList").innerHTML=
-waste.map(x=>`
-<div class="section">
-<b>${x.branch}</b>
-<p>${x.item}</p>
-<p>القيمة: ${x.value.toLocaleString()} د.ع</p>
-<p>السبب: ${x.reason}</p>
-</div>
-`).join("") || "لا توجد بيانات.";
+    pl.innerHTML=problems
+      .slice()
+      .reverse()
+      .map(p=>`
+
+        <div class="item">
+
+          <div class="item-row">
+            <b>${p.branch}</b>
+
+            <span class="badge ${
+              p.priority==="عاجل"
+              ? "red"
+              : p.priority==="مهم"
+              ? "orange"
+              : "yellow"
+            }">
+              ${p.priority}
+            </span>
+          </div>
+
+          <p>${escapeHtml(p.text)}</p>
+
+          <div class="small">
+            المسؤول: ${escapeHtml(p.responsible||"غير محدد")}
+            <br>
+            الحالة: ${p.status}
+          </div>
+
+          ${
+            p.status!=="مغلق"
+            ?
+            `<button class="btn btn-success" onclick="closeProblem(${p.id})">
+              إغلاق المشكلة
+            </button>`
+            :
+            "✅ مغلقة"
+          }
+
+        </div>
+
+      `).join("");
+
+  }
+
+  /* المهام */
+
+  const tl=document.getElementById("taskList");
+
+  if(!tasks.length){
+
+    tl.innerHTML="<div class='empty'>لا توجد مهام.</div>";
+
+  }else{
+
+    tl.innerHTML=tasks
+      .slice()
+      .reverse()
+      .map(t=>`
+
+        <div class="item">
+
+          <div class="item-row">
+            <b>${t.branch}</b>
+            <span>${t.due||"بدون موعد"}</span>
+          </div>
+
+          <p>${escapeHtml(t.text)}</p>
+
+          <div class="small">
+            المسؤول: ${escapeHtml(t.responsible||"غير محدد")}
+            <br>
+            الحالة: ${t.status}
+          </div>
+
+          ${
+            t.status!=="مكتملة"
+            ?
+            `<button class="btn btn-success" onclick="completeTask(${t.id})">
+              تم الإنجاز
+            </button>`
+            :
+            "✅ مكتملة"
+          }
+
+        </div>
+
+      `).join("");
+
+  }
+
+  /* الصيانة */
+
+  const ml=document.getElementById("maintenanceList");
+
+  if(!maintenance.length){
+
+    ml.innerHTML="<div class='empty'>لا توجد أعطال.</div>";
+
+  }else{
+
+    ml.innerHTML=maintenance
+      .slice()
+      .reverse()
+      .map(m=>`
+
+        <div class="item">
+
+          <div class="item-row">
+            <b>${m.branch}</b>
+            <span class="badge ${
+              m.status==="مكتمل"?"green":
+              m.status==="قيد المعالجة"?"yellow":"red"
+            }">
+              ${m.status}
+            </span>
+          </div>
+
+          <p>${escapeHtml(m.text)}</p>
+
+          <div class="small">
+            المسؤول: ${escapeHtml(m.responsible||"غير محدد")}
+          </div>
+
+          ${
+            m.status!=="مكتمل"
+            ?
+            `
+            <button class="btn btn-warning"
+              onclick="updateMaintenance(${m.id},'قيد المعالجة')">
+              قيد المعالجة
+            </button>
+
+            <button class="btn btn-success"
+              onclick="updateMaintenance(${m.id},'مكتمل')">
+              إغلاق العطل
+            </button>
+            `
+            :
+            "✅ مكتمل"
+          }
+
+        </div>
+
+      `).join("");
+
+  }
+
+  /* العملاء */
+
+  const cl=document.getElementById("customerList");
+
+  if(!customers.length){
+
+    cl.innerHTML="<div class='empty'>لا توجد تقييمات.</div>";
+
+  }else{
+
+    cl.innerHTML=`
+
+      <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>الفرع</th>
+            <th>التقييم</th>
+            <th>الملاحظة</th>
+            <th>التاريخ</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${
+            customers
+            .slice()
+            .reverse()
+            .map(c=>`
+
+              <tr>
+                <td>${c.branch}</td>
+                <td>${"⭐".repeat(c.score)}</td>
+                <td>${escapeHtml(c.note||"-")}</td>
+                <td>${formatDate(c.date)}</td>
+              </tr>
+
+            `).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+      </div>
+
+    `;
+
+  }
+
+  /* المخزون */
+
+  const il=document.getElementById("inventoryList");
+
+  if(!inventory.length){
+
+    il.innerHTML="<div class='empty'>لا توجد بيانات مخزون.</div>";
+
+  }else{
+
+    il.innerHTML=`
+
+      <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>الفرع</th>
+            <th>المادة</th>
+            <th>الكمية</th>
+            <th>الحد الأدنى</th>
+            <th>الحالة</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${
+            inventory
+            .slice()
+            .reverse()
+            .map(i=>{
+
+              const low=i.qty<=i.min;
+
+              return `
+
+                <tr>
+
+                  <td>${i.branch}</td>
+                  <td>${escapeHtml(i.item)}</td>
+                  <td>${i.qty}</td>
+                  <td>${i.min}</td>
+
+                  <td>
+                    ${
+                      low
+                      ? `<span class="badge red">⚠️ منخفض</span>`
+                      : `<span class="badge green">متوفر</span>`
+                    }
+                  </td>
+
+                </tr>
+
+              `;
+
+            }).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+      </div>
+
+    `;
+
+  }
+
+  /* الهدر */
+
+  const wl=document.getElementById("wasteList");
+
+  if(!waste.length){
+
+    wl.innerHTML="<div class='empty'>لا توجد بيانات هدر.</div>";
+
+  }else{
+
+    const total=waste.reduce((sum,w)=>sum+Number(w.value||0),0);
+
+    wl.innerHTML=`
+
+      <div class="stat" style="margin-bottom:15px">
+        إجمالي قيمة الهدر:
+        <div class="number red">${total.toLocaleString()} د.ع</div>
+      </div>
+
+      <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>الفرع</th>
+            <th>المادة</th>
+            <th>الكمية</th>
+            <th>القيمة</th>
+            <th>السبب</th>
+            <th>التاريخ</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${
+            waste
+            .slice()
+            .reverse()
+            .map(w=>`
+
+              <tr>
+                <td>${w.branch}</td>
+                <td>${escapeHtml(w.item)}</td>
+                <td>${w.qty}</td>
+                <td>${Number(w.value).toLocaleString()} د.ع</td>
+                <td>${escapeHtml(w.reason||"-")}</td>
+                <td>${formatDate(w.date)}</td>
+              </tr>
+
+            `).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+      </div>
+
+    `;
+
+  }
 
 }
+
+/* =========================
+   التقارير
+========================= */
 
 function renderReports(){
 
-let rows="";
+  const type=document.getElementById("reportType").value;
 
-branches.forEach(branch=>{
+  const box=document.getElementById("reportContent");
 
-let score=getScore(branch);
+  if(type==="branches"){
 
-rows+=`
-<tr>
-<td>${branch}</td>
-<td>${score}%</td>
-<td>
-<span class="status ${status(score)[1]}">
-${status(score)[0]}
-</span>
-</td>
-</tr>
-`;
+    const sorted=branches
+      .map(branch=>({
+        branch,
+        score:getScore(branch)
+      }))
+      .sort((a,b)=>b.score-a.score);
 
-});
+    box.innerHTML=`
 
-document.getElementById("reportContent").innerHTML=`
-<table>
-<thead>
-<tr>
-<th>الفرع</th>
-<th>التقييم</th>
-<th>الحالة</th>
-</tr>
-</thead>
-<tbody>
-${rows}
-</tbody>
-</table>
-`;
+      <h2>📊 تقرير الفروع</h2>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>الترتيب</th>
+            <th>الفرع</th>
+            <th>النسبة</th>
+            <th>الحالة</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${
+            sorted.map((x,i)=>{
+
+              const st=getStatus(x.score);
+
+              return `
+                <tr>
+                  <td>${i+1}</td>
+                  <td>${x.branch}</td>
+                  <td><b>${x.score}%</b></td>
+                  <td><span class="badge ${st.class}">${st.text}</span></td>
+                </tr>
+              `;
+
+            }).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+    `;
+
+    return;
+  }
+
+  if(type==="evaluation"){
+
+    box.innerHTML=`
+
+      <h2>📋 تقرير التقييمات</h2>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>الفرع</th>
+            <th>المقيّم</th>
+            <th>النسبة</th>
+            <th>التاريخ</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${
+            evaluations
+            .slice()
+            .sort((a,b)=>new Date(b.date)-new Date(a.date))
+            .map(e=>`
+
+              <tr>
+                <td>${e.branch}</td>
+                <td>${escapeHtml(e.evaluator||"-")}</td>
+                <td>${getEvaluationScore(e)}%</td>
+                <td>${formatDate(e.date)}</td>
+              </tr>
+
+            `).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+    `;
+
+    return;
+  }
+
+  if(type==="maintenance"){
+
+    box.innerHTML=`
+
+      <h2>🔧 تقرير الصيانة</h2>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>الفرع</th>
+            <th>العطل</th>
+            <th>المسؤول</th>
+            <th>الحالة</th>
+            <th>التاريخ</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${
+            maintenance.map(m=>`
+
+              <tr>
+                <td>${m.branch}</td>
+                <td>${escapeHtml(m.text)}</td>
+                <td>${escapeHtml(m.responsible||"-")}</td>
+                <td>${m.status}</td>
+                <td>${formatDate(m.date)}</td>
+              </tr>
+
+            `).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+    `;
+
+    return;
+  }
+
+  if(type==="waste"){
+
+    const total=waste.reduce((s,w)=>s+Number(w.value||0),0);
+
+    box.innerHTML=`
+
+      <h2>🗑️ تقرير الهدر</h2>
+
+      <div class="stat">
+        إجمالي الهدر:
+        <div class="number red">${total.toLocaleString()} د.ع</div>
+      </div>
+
+      <br>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>الفرع</th>
+            <th>المادة</th>
+            <th>القيمة</th>
+            <th>السبب</th>
+            <th>التاريخ</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${
+            waste.map(w=>`
+
+              <tr>
+                <td>${w.branch}</td>
+                <td>${escapeHtml(w.item)}</td>
+                <td>${Number(w.value||0).toLocaleString()}</td>
+                <td>${escapeHtml(w.reason||"-")}</td>
+                <td>${formatDate(w.date)}</td>
+              </tr>
+
+            `).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+    `;
+
+    return;
+  }
+
+  if(type==="customers"){
+
+    const average=customers.length
+      ? (
+        customers.reduce((s,c)=>s+Number(c.score),0)
+        /customers.length
+      ).toFixed(2)
+      : "0";
+
+    box.innerHTML=`
+
+      <h2>⭐ تقرير رضا الزبائن</h2>
+
+      <div class="stat">
+        متوسط رضا الزبائن:
+        <div class="number">${average}/5</div>
+      </div>
+
+      <br>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>الفرع</th>
+            <th>التقييم</th>
+            <th>الملاحظة</th>
+            <th>التاريخ</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${
+            customers.map(c=>`
+
+              <tr>
+                <td>${c.branch}</td>
+                <td>${c.score}/5</td>
+                <td>${escapeHtml(c.note||"-")}</td>
+                <td>${formatDate(c.date)}</td>
+              </tr>
+
+            `).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+    `;
+
+    return;
+  }
+
+  if(type==="problems"){
+
+    box.innerHTML=`
+
+      <h2>🚨 تقرير المشاكل</h2>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>الفرع</th>
+            <th>المشكلة</th>
+            <th>الأولوية</th>
+            <th>المسؤول</th>
+            <th>الحالة</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${
+            problems.map(p=>`
+
+              <tr>
+                <td>${p.branch}</td>
+                <td>${escapeHtml(p.text)}</td>
+                <td>${p.priority}</td>
+                <td>${escapeHtml(p.responsible||"-")}</td>
+                <td>${p.status}</td>
+              </tr>
+
+            `).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+    `;
+
+    return;
+  }
+
+  if(type==="tasks"){
+
+    box.innerHTML=`
+
+      <h2>✅ تقرير المهام</h2>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>الفرع</th>
+            <th>المهمة</th>
+            <th>المسؤول</th>
+            <th>الاستحقاق</th>
+            <th>الحالة</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${
+            tasks.map(t=>`
+
+              <tr>
+                <td>${t.branch}</td>
+                <td>${escapeHtml(t.text)}</td>
+                <td>${escapeHtml(t.responsible||"-")}</td>
+                <td>${t.due||"-"}</td>
+                <td>${t.status}</td>
+              </tr>
+
+            `).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+    `;
+
+    return;
+  }
+
+  if(type==="inventory"){
+
+    box.innerHTML=`
+
+      <h2>📦 تقرير المخزون</h2>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>الفرع</th>
+            <th>المادة</th>
+            <th>الكمية</th>
+            <th>الحد الأدنى</th>
+            <th>الحالة</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${
+            inventory.map(i=>{
+
+              const low=i.qty<=i.min;
+
+              return `
+                <tr>
+                  <td>${i.branch}</td>
+                  <td>${escapeHtml(i.item)}</td>
+                  <td>${i.qty}</td>
+                  <td>${i.min}</td>
+                  <td>${low?"⚠️ منخفض":"✅ متوفر"}</td>
+                </tr>
+              `;
+
+            }).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+    `;
+
+  }
 
 }
+
+/* =========================
+   إعدادات
+========================= */
 
 function renderSettings(){
 
-document.getElementById("settingsBranches").innerHTML=
-branches.map((b,i)=>`
-<div class="section">
-${i+1}. ${b}
-<button class="danger"
-onclick="deleteBranch(${i})">
-حذف
-</button>
-</div>
-`).join("");
+  document.getElementById("stableLimit").value=limits.stable;
+  document.getElementById("followLimit").value=limits.follow;
+  document.getElementById("actionLimit").value=limits.action;
 
-document.getElementById("stableLimit").value=limits.stable;
-document.getElementById("followLimit").value=limits.follow;
-document.getElementById("actionLimit").value=limits.action;
+  document.getElementById("settingsBranches").innerHTML=
 
-}
+    branches.map((b,i)=>`
 
-function addBranch(){
+      <div class="item">
 
-let name=document.getElementById("newBranch").value.trim();
+        <div class="item-row">
 
-if(!name)return;
+          <b>${i+1}. ${b}</b>
 
-branches.push(name);
+          ${
+            branches.length>1
+            ?
+            `<button class="btn btn-danger" onclick="deleteBranch(${i})">
+              حذف
+            </button>`
+            :
+            ""
+          }
 
-document.getElementById("newBranch").value="";
+        </div>
 
-saveAll();
-renderAll();
+      </div>
 
-}
-
-function deleteBranch(index){
-
-if(branches.length<=1){
-alert("يجب أن يبقى فرع واحد على الأقل");
-return;
-}
-
-if(confirm("هل تريد حذف الفرع؟")){
-branches.splice(index,1);
-saveAll();
-renderAll();
-}
+    `).join("");
 
 }
 
 function saveLimits(){
 
-limits.stable=Number(
-document.getElementById("stableLimit").value
-);
+  limits={
+    stable:Number(document.getElementById("stableLimit").value),
+    follow:Number(document.getElementById("followLimit").value),
+    action:Number(document.getElementById("actionLimit").value)
+  };
 
-limits.follow=Number(
-document.getElementById("followLimit").value
-);
+  setData("limits",limits);
 
-limits.action=Number(
-document.getElementById("actionLimit").value
-);
+  renderAll();
 
-saveAll();
-
-alert("تم حفظ حدود الحالات ✅");
-
-renderAll();
+  alert("✅ تم حفظ الحدود.");
 
 }
 
-function openBranch(branch){
+function addBranch(){
 
-let score=getScore(branch);
+  const input=document.getElementById("newBranch");
 
-alert(
-"🏪 "+branch+
-"\n\n📊 التقييم: "+score+"%"+
-"\n"+status(score)[0]+
-"\n🚨 المشاكل المفتوحة: "+
-problems.filter(x=>x.branch===branch && x.status!=="مغلقة").length+
-"\n🛠️ الأعطال: "+
-maintenance.filter(x=>x.branch===branch).length+
-"\n⭐ تقييمات الزبائن: "+
-customers.filter(x=>x.branch===branch).length
-);
+  const name=input.value.trim();
+
+  if(!name){
+    alert("اكتب اسم الفرع.");
+    return;
+  }
+
+  if(branches.includes(name)){
+    alert("الفرع موجود مسبقًا.");
+    return;
+  }
+
+  branches.push(name);
+
+  setData("branches",branches);
+
+  input.value="";
+
+  renderAll();
 
 }
+
+function deleteBranch(index){
+
+  if(!confirm("هل تريد حذف هذا الفرع؟")) return;
+
+  branches.splice(index,1);
+
+  setData("branches",branches);
+
+  renderAll();
+
+}
+
+/* =========================
+   حساب التقييم
+========================= */
+
+function getEvaluationScore(e){
+
+  let total=0;
+
+  SECTIONS.forEach(s=>{
+    total += Number(e.sections?.[s.id]?.score || 0);
+  });
+
+  return total;
+
+}
+
+/* =========================
+   أدوات
+========================= */
+
+function formatDate(date){
+
+  if(!date) return "-";
+
+  const d=new Date(date);
+
+  return d.toLocaleString("ar-IQ",{
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit",
+    hour:"2-digit",
+    minute:"2-digit"
+  });
+
+}
+
+function escapeHtml(value){
+
+  return String(value??"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+/* =========================
+   تحديث الكل
+========================= */
 
 function renderAll(){
 
-document.getElementById("totalBranches")
-.innerText=branches.length;
+  fillBranchSelects();
 
-document.getElementById("date")
-.innerText=new Date().toLocaleDateString("ar-IQ");
+  renderDashboard();
 
-[
-"evaluationBranch",
-"problemBranch",
-"taskBranch",
-"maintenanceBranch",
-"customerBranch",
-"inventoryBranch",
-"wasteBranch"
-].forEach(fillSelect);
+  renderBranches();
 
-renderDashboard();
-renderBranches();
-renderEvaluation();
-renderLists();
-renderReports();
-renderSettings();
+  renderLists();
+
+  renderReports();
+
+  renderSettings();
 
 }
 
-document
-.getElementById("evaluationBranch")
-.addEventListener("change",renderEvaluation);
+/* =========================
+   التشغيل
+========================= */
 
 renderAll();
 
